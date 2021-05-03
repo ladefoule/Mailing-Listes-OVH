@@ -15,7 +15,7 @@
                     </thead>
                     <tbody>
                     <?php
-                        foreach ($mailingLists as $mailingList) {
+                        foreach ($mailingLists as $i => $mailingList) {
                             echo '<tr>';
                                 echo "<td>" . ($i+1) . "</td>";
                                 echo "<td class='text-left'>" . $mailingList . "</td>";

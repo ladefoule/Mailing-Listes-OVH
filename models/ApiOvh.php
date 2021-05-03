@@ -4,7 +4,7 @@ use Ovh\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-class MailingList
+class ApiOvh
 {
     private $api;
 
@@ -31,7 +31,7 @@ class MailingList
     /**
      * Récupération de toutes les mailingLists
      */
-    public function all($array)
+    public function index($array)
     {
         $domain = $array['domain'];
 
@@ -44,7 +44,7 @@ class MailingList
     }
 
     // Récupération des infos de la mailing list
-    public function get($array)
+    public function show($array)
     {
         $domain = $array['domain'];
         $name = $array['name'];
@@ -61,13 +61,17 @@ class MailingList
     }
 
     // Création d'une mailing list
-    public function post($array)
+    public function create($array)
     {
         $domain = $array['domain'];
-        $name = $array['name'];
-        $options = $array['options'];
-        $ownerEmail = $array['ownerEmail'];
-        $replyTo = $array['replyTo'];
+
+        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
+        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
+
+        $name = htmlspecialchars($_POST['name']);
+        $replyTo = htmlspecialchars($_POST['replyTo']);
+        $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
 
         try {
             $this->api->post("/email/domain/$domain/mailingList/", array(
@@ -79,10 +83,13 @@ class MailingList
             ));
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            // unset($_SESSION['form']); 
+            unset($_SESSION['form']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
+            $_SESSION['form']['name'] = $name;
+            $_SESSION['form']['ownerEmail'] = $ownerEmail;
+            $_SESSION['form']['replyTo'] = $replyTo;
             return false;
         }
     }
@@ -90,30 +97,30 @@ class MailingList
     /**
      * Changement des options d'une mailing list
      */
-    public function changeOptions($array)
-    {
-        $domain = $array['domain'];
-        $name = $array['name'];
-        $options = $array['options'];
+    // public function changeOptions($array)
+    // {
+    //     $domain = $array['domain'];
+    //     $name = $array['name'];
+    //     $options = $array['options'];
 
-        try {
-            $this->api->post("/email/domain/$domain/mailingList/$name/changeOptions", array(
-                'options' => $options
-            ));
+    //     try {
+    //         $this->api->post("/email/domain/$domain/mailingList/$name/changeOptions", array(
+    //             'options' => $options
+    //         ));
 
-            // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            // unset($_SESSION['form']); 
-            return true;
-        } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
-            return false;
-        }
-    }
+    //         // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
+    //         // unset($_SESSION['form']); 
+    //         return true;
+    //     } catch (RequestException $e) {
+    //         error_log($e->getResponse()->getBody()->getContents());
+    //         return false;
+    //     }
+    // }
 
     /**
      * Mise à jour des infos d'une mailing list
      */
-    public function put($array)
+    public function update($array)
     {
         $domain = $array['domain'];
         $name = $array['name'];
@@ -162,7 +169,7 @@ class MailingList
     /*      GESTION DES ABONNES    */
     /* --------------------------- */
 
-    public function deleteSuscriber($array)
+    public function suscriberDelete($array)
     {
         $domain = $array['domain'];
         $name = $array['name'];
@@ -182,7 +189,7 @@ class MailingList
     /*      GESTION DES MODERATEURS    */
     /* ------------------------------- */
 
-    public function allModerators($array)
+    public function moderator($array)
     {
         $domain = $array['domain'];
         $name = $array['name'];
@@ -198,7 +205,7 @@ class MailingList
         }
     }
 
-    public function deleteModerator($array)
+    public function moderatorDelete($array)
     {
         $domain = $array['domain'];
         $name = $array['name'];

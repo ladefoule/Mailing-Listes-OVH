@@ -26,11 +26,7 @@
                             Mes mailing lists
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <?php if(! $responder){ ?>
-                                <a class="dropdown-item" href="/create">Créer</a>
-                            <?php }else{ ?>
-                                <a class="dropdown-item" href="/show">Visualiser</a>
-                            <?php } ?>
+                            <a class="dropdown-item" href="/create">Créer</a>
                         </div>
                     </li>
                     <?php } ?>

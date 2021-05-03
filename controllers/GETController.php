@@ -14,17 +14,18 @@ class GETController
         // Variables utilisées dans la view form.php
         $domain = $array['domain'];
         $account = $array['account'];
-        $action = $array['action'];
-        $to = $from = $content = '';
-        $copy = true;
-        $formMethod = 'POST';
-        $buttons = $array['buttons'];
-        
+        $email = $array['email'];
+
+        $moderatorMessage = $moderatorMessage = $moderatorMessage = false;
+        $name = $ownerEmail = $replyTo = '';
+
         if(isset($_SESSION['form'])){
-            $copy = $_SESSION['form']['copy'];
-            $from = $_SESSION['form']['from'];
-            $to = $_SESSION['form']['to'];
-            $content = $_SESSION['form']['content'];
+            $moderatorMessage = $_SESSION['form']['moderatorMessage'] ?? '';
+            $subscribeByModerator = $_SESSION['form']['subscribeByModerator'] ?? '';
+            $usersPostOnly = $_SESSION['form']['usersPostOnly'] ?? '';
+            $replyTo = $_SESSION['form']['replyTo'] ?? '';
+            $ownerEmail = $_SESSION['form']['ownerEmail'] ?? '';
+            $name = $_SESSION['form']['name'] ?? '';
         }
         
         include('../views/form.php');
@@ -32,13 +33,13 @@ class GETController
     }
     
     /**
-     * Method show
+     * Method update
      *
      * @param array $array
      *
      * @return array
      */
-    public static function show(array $array)
+    public static function update(array $array)
     {
         $domain = $array['domain'];
         $account = $array['account'];
@@ -87,11 +88,10 @@ class GETController
         include('../views/notification.php');
         
         // Variables utilisées dans la view logged.php
-        $action = $array['action'];
-        $buttons = $array['buttons'];
         $account = $array['account'];
         $domain = $array['domain'];
-        $responder = $api->get($array);
+        $mailingLists = $api->get($array);
+
         include('../views/logged.php');
 
         return $array;
@@ -135,10 +135,10 @@ class GETController
         $account = $array['account'];
         $lists = []; // Contiendra toutes les listes dans lesquelles l'user est modérateur
 
-        $mailingLists = $api->all($array);
+        $mailingLists = $api->index($array);
         foreach ($mailingLists as $mailingList) {
             $array['name'] = $mailingList;
-            $moderators = $api->allModerators($array);
+            $moderators = $api->moderator($array);
 
             if(in_array($email, $moderators))
                 $lists[] = $mailingList;

@@ -16,7 +16,7 @@
         "files":[
             "config.php",
             "src/fonctions.php",
-            "models/MailingList.php",
+            "models/ApiOvh.php",
             "controllers/GETController.php",
             "controllers/POSTController.php"
         ]

@@ -5,12 +5,12 @@
             <form method="POST">
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="name" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Nom : </label>
-                    <input type="text" required class="form-control col-12 col-lg-6" id="name" value="<?php echo $name ?>">
+                    <input type="text" required class="form-control col-12 col-lg-6" id="name" name="name" value="<?php echo $name ?>">
                 </div>
 
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="ownerEmail" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Propriétaire : </label>
-                    <input type="text" required class="form-control col-12 col-lg-6" id="ownerEmail" value="<?php echo $ownerEmail ?>">
+                    <input type="text" required class="form-control col-12 col-lg-6" id="ownerEmail" name="ownerEmail" value="<?php echo $ownerEmail ?>">
                 </div>
                 
                 <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
@@ -36,7 +36,7 @@
 
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="replyTo" class="col-lg-4 text-lg-right col-form-label">Répondre à : </label>
-                    <input type="email" class="form-control col-12 col-lg-6" id="replyTo" value="<?php echo $replyTo ?>">
+                    <input type="email" class="form-control col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>">
                 </div>
 
                 <div class="form-row pb-3 d-flex">

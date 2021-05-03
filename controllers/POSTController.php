@@ -12,9 +12,8 @@ class POSTController
     public static function create(array $array)
     {
         $api = $array['api'];
-        $result = $api->post($array);
-
-        var_dump($result);exit();
+        // var_dump($array);exit();
+        $result = $api->create($array);
 
         if($result) {
             $class = 'success';
@@ -30,7 +29,8 @@ class POSTController
         $buttons = $array['buttons'];
         $account = $array['account'];
         $domain = $array['domain'];
-        $responder = $api->get($array);
+        
+        $mailingLists = $api->index($array);
         include('../views/logged.php');
         return $array;
     }
