@@ -16,9 +16,9 @@
         "files":[
             "config.php",
             "src/fonctions.php",
-            "models/ApiOvh.php",
-            "controllers/GETController.php",
-            "controllers/POSTController.php"
+            "models/MailingList.php",
+            "controllers/MailingList.php",
+            "controllers/Suscriber.php"
         ]
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-
-class GETController
+class MailingList
 {
     /**
      * Method create
@@ -55,10 +53,6 @@ class GETController
             // Variables utilisées dans la view form.php
             $copy = $responder['copy'];
             $content = htmlentities($responder['content']);
-            $from = new Carbon($responder['from']);
-            $from = $from->format('Y-m-d');
-            $to = new Carbon($responder['to']);
-            $to = $to->format('Y-m-d');
 
             include('../views/form.php');
         } else {

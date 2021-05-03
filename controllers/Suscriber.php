@@ -1,6 +1,6 @@
 <?php
 
-class POSTController
+class Suscriber
 {
     /**
      * Method create
