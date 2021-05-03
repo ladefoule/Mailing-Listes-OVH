@@ -1,30 +1,46 @@
 <div class="col-lg-8 p-0">
     <div class="card">
         <div class="card-header p-3">
-            Gestion de mon répondeur
+            Gestion des mailing lists
         </div>
-        <div class="card-body p-3">
-            <div class="form-row pb-3">
-                <label for="account" class="col-md-3 col-form-label text-md-right"><span class="text-danger">*</span> Email</label>
-                <div class="col-md-9 d-flex align-items-center">
-                    <input type="text" class="form-control col-6" disabled id="account" name="account" value="<?php echo $account ?>">
-                    <span class="col-6">@<?php echo $domain ?></span>
-                </div>
+        <div class="card-body">
+            <div class="col-12 px-0">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Mailing List</th>
+                        <th>Abonnés</th>
+                        <th>Modérateurs</th>
+                        <!-- <th class="text-right">Actions</th> -->
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach ($mailingLists as $mailingList) {
+                            echo '<tr>';
+                                echo "<td>" . ($i+1) . "</td>";
+                                echo "<td class='text-left'>" . $mailingList . "</td>";
+                                echo "<td>
+                                            <a class='btn-sm btn-info' href='/$mailingList/update'><span class='icon-edit'></span></a>
+                                            <a class='btn-sm btn-danger' href='/$mailingList/delete'><span class='icon-trash-empty'></span></a>
+                                    </td>";
+                                echo "<td>
+                                        <a class='btn-sm btn-info' href='/$mailingList/suscriber'><span class='icon-list-bullet'></span></a>
+                                        <a class='btn-sm btn-primary' href='/$mailingList/suscriber/create'><span class='icon-user-plus'></span></a>
+                                </td>";
+                                echo "<td>
+                                        <a class='btn-sm btn-info' href='/$mailingList/moderator'><span class='icon-list-bullet'></span></a>
+                                        <a class='btn-sm btn-primary' href='/$mailingList/moderator/create'><span class='icon-user-plus'></span></a>
+                                </td>";
+                            echo '</tr>';
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="form-row pb-3">
-                <label for="account" class="col-md-3 col-form-label text-md-right">Mon répondeur</label>
-                <div class="col-md-9 d-flex align-items-center d-flex flex-wrap">
-                    <?php if($responder){ ?>
-                        <span class="col-12 alert alert-info">
-                            <!-- Vous avez un répondeur -->Valable du <?php echo $responder['from_locale'] ?> au <?php echo $responder['to_locale'] ?>
-                        </span>
-                        <a href="/show"><button class="btn btn-info" name="action"><?php echo $buttons['show']['button'] ?></button></a>
-                    <?php }else{ ?>
-                        <span class="col-12 alert alert-info">Vous n'avez pas de répondeur actif.</span>
-                        <a href="/create"><button class="btn btn-primary" name="action"><?php echo $buttons['create']['button'] ?></button></a>
-                    <?php } ?>
-                </div>
+            <div class="col-12">
+                <a href="/create" class="btn btn-primary">Créer une mailing list</a>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <div class="col-lg-8 p-0">
     <div class="card">
-        <div class="card-header"><span class="icon-mail"></span> Mailing List</div>
+        <div class="card-header"><span class="icon-list"></span> Mailing List</div>
         <div class="card-body">
             <form method="POST">
                 <div class="form-row pb-3 d-flex align-items-center">

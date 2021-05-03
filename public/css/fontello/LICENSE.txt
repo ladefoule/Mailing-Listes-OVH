@@ -1,13 +1,13 @@
 Font license info
 
 
-## Iconic
+## Font Awesome
 
-   Copyright (C) 2012 by P.J. Onori
+   Copyright (C) 2016 by Dave Gandy
 
-   Author:    P.J. Onori
-   License:   SIL (http://scripts.sil.org/OFL)
-   Homepage:  http://somerandomdude.com/work/iconic/
+   Author:    Dave Gandy
+   License:   SIL ()
+   Homepage:  http://fortawesome.github.com/Font-Awesome/
 
 
 ## Entypo
@@ -17,23 +17,5 @@ Font license info
    Author:    Daniel Bruce
    License:   SIL (http://scripts.sil.org/OFL)
    Homepage:  http://www.entypo.com
-
-
-## Typicons
-
-   (c) Stephen Hutchings 2012
-
-   Author:    Stephen Hutchings
-   License:   SIL (http://scripts.sil.org/OFL)
-   Homepage:  http://typicons.com/
-
-
-## Font Awesome
-
-   Copyright (C) 2016 by Dave Gandy
-
-   Author:    Dave Gandy
-   License:   SIL ()
-   Homepage:  http://fortawesome.github.com/Font-Awesome/
 
 
