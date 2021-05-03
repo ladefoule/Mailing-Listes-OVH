@@ -12,7 +12,6 @@
                         <th>Mailing List</th>
                         <th>Abonnés</th>
                         <th>Modérateurs</th>
-                        <!-- <th class="text-right">Actions</th> -->
                     </thead>
                     <tbody>
                     <?php
