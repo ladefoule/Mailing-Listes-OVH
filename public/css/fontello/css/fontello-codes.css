@@ -1,0 +1,8 @@
+
+.icon-undo:before { content: '\e800'; } /* '' */
+.icon-left-thin:before { content: '\e801'; } /* '' */
+.icon-left-outline:before { content: '\e802'; } /* '' */
+.icon-left:before { content: '\e803'; } /* '' */
+.icon-mail:before { content: '\e804'; } /* '' */
+.icon-home:before { content: '\e805'; } /* '' */
+.icon-mail-alt:before { content: '\f0e0'; } /* '' */

@@ -1,0 +1,4 @@
+/vendor
+/public/css/bootstrap.min.css
+/public/js/bootstrap.bundle.min.js
+config.php

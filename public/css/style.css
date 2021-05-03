@@ -1,0 +1,16 @@
+/* body{
+    background: ;
+} */
+
+.full {
+    background: url(/img/kristina-litvjak-50435.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.nav-link:hover{
+    color:white !important;
+    /* font-weight: bold; */
+}

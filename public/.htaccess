@@ -1,0 +1,22 @@
+# Protection de la lecture des repertoires
+<IfModule mod_autoindex.c>
+	Options -Indexes
+</IfModule>
+
+# Encodage des caractères
+AddDefaultCharset utf-8
+
+# Masquer les informations du serveur
+ServerSignature Off
+
+# Protege le fichier htaccess
+<files .htaccess>
+	order allow,deny
+	deny from all
+</files>
+
+# Réécriture des URLS 
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?action=$1 [QSA,PT,L]
