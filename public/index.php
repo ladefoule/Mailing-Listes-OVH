@@ -1,13 +1,10 @@
 <?php 
 session_start();
 
-use ApiOvh;
-use Carbon\Carbon;
+use MailingList;
 
 require __DIR__ . '/../vendor/autoload.php';
 require '../config.php';
-
-Carbon::setLocale($lang);
 
 $contenu = ''; // Layout content
 
@@ -29,7 +26,7 @@ if(! in_array($action, $routes[$method]) || (! $account && $action != 'index')){
     exit;
 }
 
-$api = new ApiOvh([
+$api = new MailingList([
     'application_key' => $applicationKey,
     'application_secret' => $applicationSecret,
     'consumer_key' => $consumerKey,
@@ -40,6 +37,7 @@ $api = new ApiOvh([
 $array = [
     'domain' => $domain,
     'account' => $account,
+    'email' => $account.'@'.$domain,
     'api' => $api,
     'buttons' => $buttons,
     'action' => $action,
@@ -52,8 +50,9 @@ $controller = $method.'Controller';
 
 ob_start();
 $array = $controller::$action($array);
+// $array = $controller::$action($array);
 $contenu = ob_get_clean();
 
-$responder = $api->get($array);
+$mailingLists = $api->get($array);
 $account = $array['account'];
 require '../views/layout.php';

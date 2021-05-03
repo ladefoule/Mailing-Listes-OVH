@@ -1,6 +1,6 @@
 <?php
 
-class MailingList
+class GETController
 {
     /**
      * Method create
@@ -131,18 +131,32 @@ class MailingList
     public static function index(array $array)
     {
         $api = $array['api'];
+        $email = $array['email'];
+        $account = $array['account'];
+        $lists = []; // Contiendra toutes les listes dans lesquelles l'user est modérateur
+
+        $mailingLists = $api->all($array);
+        foreach ($mailingLists as $mailingList) {
+            $array['name'] = $mailingList;
+            $moderators = $api->allModerators($array);
+
+            if(in_array($email, $moderators))
+                $lists[] = $mailingList;
+        }
+            
 
         // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-        unset($_SESSION['form']); 
+        // unset($_SESSION['form']); 
 
         // Variables utilisées dans la view logged.php
         $action = $array['action'];
         $buttons = $array['buttons'];
-        $account = $array['account'];
+        $name = $array['name'];
         $domain = $array['domain'];
         
         if($account){
-            $responder = $api->get($array);
+            // $mailingLists = $api->all($array);
+            // var_dump($lists);exit();
             include('../views/logged.php');
         }else
             include('../views/login.php');

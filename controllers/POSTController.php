@@ -1,6 +1,6 @@
 <?php
 
-class Suscriber
+class POSTController
 {
     /**
      * Method create
@@ -13,6 +13,8 @@ class Suscriber
     {
         $api = $array['api'];
         $result = $api->post($array);
+
+        var_dump($result);exit();
 
         if($result) {
             $class = 'success';

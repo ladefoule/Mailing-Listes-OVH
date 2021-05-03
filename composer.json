@@ -17,8 +17,8 @@
             "config.php",
             "src/fonctions.php",
             "models/MailingList.php",
-            "controllers/MailingList.php",
-            "controllers/Suscriber.php"
+            "controllers/GETController.php",
+            "controllers/POSTController.php"
         ]
     }
 }
