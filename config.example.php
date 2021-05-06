@@ -10,21 +10,6 @@
 
     $lang = 'fr';
 
-    $buttons = [
-        'delete' => [
-            'button' => 'Supprimer',
-            'class' => 'danger'
-        ],
-        'create' => [
-            'button' => 'Créer',
-            'class' => 'primary'
-        ],
-        'show' => [
-            'button' => 'Visualiser',
-            'class' => 'info'
-        ]
-    ];
-
     $messageError = "Une erreur s'est produite, merci de rééssayer.";
     $classError = 'danger';
 // test

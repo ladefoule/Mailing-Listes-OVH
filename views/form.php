@@ -1,16 +1,16 @@
 <div class="col-lg-8 p-0">
     <div class="card">
-        <div class="card-header"><span class="icon-list"></span> Mailing List</div>
+        <div class="card-header"><span class="icon-mail"></span> Mailing List</div>
         <div class="card-body">
             <form method="POST">
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="name" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Nom : </label>
-                    <input type="text" required class="form-control col-12 col-lg-6" id="name" name="name" value="<?php echo $name ?>">
+                    <input type="text" required class="form-control-sm col-12 col-lg-6" id="name" name="name" value="<?php echo $name ?>">
                 </div>
 
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="ownerEmail" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Propriétaire : </label>
-                    <input type="text" required class="form-control col-12 col-lg-6" id="ownerEmail" name="ownerEmail" value="<?php echo $ownerEmail ?>">
+                    <input type="text" required class="form-control-sm col-12 col-lg-6" id="ownerEmail" name="ownerEmail" value="<?php echo $ownerEmail ?>">
                 </div>
                 
                 <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
@@ -36,11 +36,11 @@
 
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="replyTo" class="col-lg-4 text-lg-right col-form-label">Répondre à : </label>
-                    <input type="email" class="form-control col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>">
+                    <input type="email" class="form-control-sm col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>">
                 </div>
 
                 <div class="form-row pb-3 d-flex">
-                    <button type="submit" class="offset-lg-4 btn btn-primary px-4" name="action" value="create">Valider</button>
+                    <button type="submit" class="offset-lg-4 btn-sm btn-primary px-4" name="action" value="create">Valider</button>
                 </div>
             </form>
         </div>

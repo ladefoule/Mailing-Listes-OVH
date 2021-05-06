@@ -5,16 +5,16 @@ class GETController
     /**
      * Method create
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function create(array $array)
+    public static function create(array $global)
     {
         // Variables utilisées dans la view form.php
-        $domain = $array['domain'];
-        $account = $array['account'];
-        $email = $array['email'];
+        $domain = $global['domain'];
+        $account = $global['account'];
+        $email = $global['email'];
 
         $moderatorMessage = $moderatorMessage = $moderatorMessage = false;
         $name = $ownerEmail = $replyTo = '';
@@ -29,82 +29,85 @@ class GETController
         }
         
         include('../views/form.php');
-        return $array;
+        return $global;
     }
     
     /**
      * Method update
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function update(array $array)
+    public static function update(array $global)
     {
-        $domain = $array['domain'];
-        $account = $array['account'];
-        $api = $array['api'];
-        $action = $array['action'];
-        $formMethod = 'GET';
-        $buttons = $array['buttons'];
+        $domain = $global['domain'];
+        $account = $global['account'];
+        $api = $global['api'];
+        $name = $global['name'];
 
-        $responder = $api->get($array);
-
-        if($responder) {
+        $mailingList = $api->show($global);
+        
+        if($mailingList) {
             // Variables utilisées dans la view form.php
-            $copy = $responder['copy'];
-            $content = htmlentities($responder['content']);
+            $nbSubscribers = $mailingList['nbSubscribers'];
+            $replyTo = $mailingList['replyTo'];
+            $usersPostOnly = $mailingList['options']['usersPostOnly'];
+            $moderatorMessage = $mailingList['options']['moderatorMessage'];
+            $subscribeByModerator = $mailingList['options']['subscribeByModerator'];
+            $ownerEmail = $mailingList['ownerEmail'];
+            // $content = htmlentities($mailingList['content']);
 
             include('../views/form.php');
         } else {
-            $class = $array['class_error'];
-            $message = $array['message_error'];
+            $class = $global['class_error'];
+            $message = $global['message_error'];
             include('../views/notification.php');
 
             include('../views/logged.php');
         }
 
-        return $array;
+        return $global;
     }
     
     /**
      * Method delete
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function delete(array $array)
+    public static function delete(array $global)
     {
-        $api = $array['api'];
-        $result = $api->delete($array);
+        $api = $global['api'];
+        $result = $api->delete($global);
         if($result) {  
             $class = 'success';
             $message = "Répondeur supprimé avec succès !";
         }else{            
-            $class = $array['class_error'];
-            $message = $array['message_error'];
+            $class = $global['class_error'];
+            $message = $global['message_error'];
         }
         include('../views/notification.php');
         
         // Variables utilisées dans la view logged.php
-        $account = $array['account'];
-        $domain = $array['domain'];
-        $mailingLists = $api->get($array);
+        $account = $global['account'];
+        $domain = $global['domain'];
+        $mailingLists = $api->get($global);
 
         include('../views/logged.php');
 
-        return $array;
+        return $global;
     }
     
     /**
      * Method logout
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function logout(array $array)
+    public static function logout(array $global)
     {
         session_destroy();
         
@@ -114,53 +117,51 @@ class GETController
         
         // Variables utilisées dans la view login.php
         $account = '';
-        $domain = $array['domain'];
+        $domain = $global['domain'];
         include('../views/login.php');
         
-        $array['account'] = '';
-        return $array;
+        $global['account'] = '';
+        return $global;
     }
     
     /**
      * Method index
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function index(array $array)
+    public static function index(array $global)
     {
-        $api = $array['api'];
-        $email = $array['email'];
-        $account = $array['account'];
-        $lists = []; // Contiendra toutes les listes dans lesquelles l'user est modérateur
+        $api = $global['api'];
+        $email = $global['email'];
+        $account = $global['account'];
+        $mailingLists = []; // Contiendra toutes les listes dans lesquelles le $account est modérateur (ou propriétaire)
 
-        $mailingLists = $api->index($array);
-        foreach ($mailingLists as $mailingList) {
-            $array['name'] = $mailingList;
-            $moderators = $api->moderator($array);
+        $lists = $api->index($global);
+        foreach ($lists as $mailingList) {
+            $global['name'] = $mailingList;
+            $moderators = $api->moderator($global);
 
             if(in_array($email, $moderators))
-                $lists[] = $mailingList;
+                $mailingLists[] = $mailingList;
         }
             
 
         // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-        // unset($_SESSION['form']); 
+        unset($_SESSION['form']); 
 
         // Variables utilisées dans la view logged.php
-        $action = $array['action'];
-        $buttons = $array['buttons'];
-        $name = $array['name'];
-        $domain = $array['domain'];
+        $name = $global['name'];
+        $domain = $global['domain'];
         
         if($account){
-            // $mailingLists = $api->all($array);
+            // $mailingLists = $api->all($global);
             // var_dump($lists);exit();
             include('../views/logged.php');
         }else
             include('../views/login.php');
 
-        return $array;
+        return $global;
     }
 }

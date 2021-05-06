@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-use ApiOvh;
+// use ApiOvh;
 
 require __DIR__ . '/../vendor/autoload.php';
 require '../config.php';
@@ -57,13 +57,13 @@ $api = new ApiOvh([
 ]);
 
 // Les données utilisées dans les différentes méthodes des models et controllers
-$array = [
+$global = [
     'domain' => $domain,
     'account' => $account,
     'email' => $account.'@'.$domain,
     'name' => $name,
     'api' => $api,
-    'buttons' => $buttons,
+    'site' => $site,
     'action' => $action,
     'imap_server' => $imapServer,
     'class_error' => $classError,
@@ -72,11 +72,12 @@ $array = [
 
 $controller = $method.'Controller';
 
+
+// echo $action;exit();
 ob_start();
-$array = $controller::$action($array);
-// $array = $controller::$action($array);
+$global = $controller::$action($global);
 $contenu = ob_get_clean();
 
-// $mailingLists = $api->get($array);
-$account = $array['account'];
+// $mailingLists = $api->get($global);
+$account = $global['account'];
 require '../views/layout.php';

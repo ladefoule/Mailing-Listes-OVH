@@ -5,49 +5,108 @@ class POSTController
     /**
      * Method create
      *
-     * @param array $array
+     * @param array $global
      *
      * @return array
      */
-    public static function create(array $array)
+    public static function create(array $global)
     {
-        $api = $array['api'];
-        // var_dump($array);exit();
-        $result = $api->create($array);
+        $api = $global['api'];
+        // var_dump($global);exit();
+        $name = htmlspecialchars($_POST['name']);
+        $replyTo = htmlspecialchars($_POST['replyTo']);
+        $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
+        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
+        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
+
+        $request = array(
+            'language' => 'fr', // Language of mailing list (type: domain.DomainMlLanguageEnum)
+            'name' => $name, // Mailing list name (type: string)
+            'options' => $options, // Options of mailing list (type: domain.DomainMlOptionsStruct)
+            'ownerEmail' => $ownerEmail, // Owner Email (type: string)
+            'replyTo' => $replyTo, // Email to reply of mailing list (type: string)
+        );
+
+        $result = $api->create($request);
 
         if($result) {
             $class = 'success';
             $message = "Répondeur créé avec succès !";
         }else{                        
-            $class = $array['class_error'];
-            $message = $array['message_error'];
+            $class = $global['class_error'];
+            $message = $global['message_error'];
         }
         include('../views/notification.php');
 
         // Variables utilisées dans la view logged.php
-        $action = $array['action'];
-        $buttons = $array['buttons'];
-        $account = $array['account'];
-        $domain = $array['domain'];
-        
-        $mailingLists = $api->index($array);
+        $action = $global['action'];
+        $account = $global['account'];
+        $domain = $global['domain'];
+
+        $mailingLists = $api->index($global);
         include('../views/logged.php');
-        return $array;
+        return $global;
+    }
+
+    /**
+     * Method create
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function update(array $global, $name)
+    {
+        $api = $global['api'];
+        $domain = $global['domain'];
+        // var_dump($global);exit();
+        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
+        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
+        $replyTo = htmlspecialchars($_POST['replyTo']);
+        $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
+
+        $request = [
+            'name' => $name,
+            'options' => $options,
+            'replyTo' => $replyTo,
+            'ownerEmail' => $ownerEmail,
+        ];
+
+        $result = $api->update($name, $request);
+
+        if($result) {
+            $class = 'success';
+            $message = "Répondeur créé avec succès !";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        // Variables utilisées dans la view logged.php
+        $action = $global['action'];
+        $account = $global['account'];
+        $domain = $global['domain'];
+
+        $mailingLists = $api->index($global);
+        include('../views/logged.php');
+        return $global;
     }
     
     /**
      * index
      *
-     * @param  mixed $array
+     * @param  mixed $global
      * @return void
      */
-    public static function index(array $array)
+    public static function index(array $global)
     {
-        $api = $array['api'];
-        $domain = $array['domain'];
-        $account = $array['account'];
-        $buttons = $array['buttons'];
-        $imapServer = $array['imap_server'];
+        $api = $global['api'];
+        $domain = $global['domain'];
+        $account = $global['account'];
+        $imapServer = $global['imap_server'];
         $email = htmlspecialchars($_POST['account']) .'@'. $domain;
         $password = htmlspecialchars($_POST['password']);
 
@@ -63,12 +122,12 @@ class POSTController
             $account = htmlspecialchars($_POST['account']);
             
             $_SESSION['account'] = $account; // On active la SESSION
-            $array['account'] = $account; // On met à jour la variable $array
+            $global['account'] = $account; // On met à jour la variable $global
             
-            $responder = $api->get($array);
+            $responder = $api->index($global);
             include('../views/logged.php');
         }
 
-        return $array;
+        return $global;
     }
 }

@@ -39,7 +39,7 @@
             </div>
 
             <div class="col-12">
-                <a href="/create" class="btn btn-primary">Créer une mailing list</a>
+                <a href="/create" class="btn-sm btn-primary">Créer une mailing list</a>
             </div>
         </div>
     </div>

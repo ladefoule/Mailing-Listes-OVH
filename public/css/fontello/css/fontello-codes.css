@@ -2,5 +2,7 @@
 .icon-edit:before { content: '\e800'; } /* '' */
 .icon-list-add:before { content: '\e801'; } /* '' */
 .icon-trash-empty:before { content: '\e802'; } /* '' */
+.icon-plus:before { content: '\e803'; } /* '' */
+.icon-mail:before { content: '\e804'; } /* '' */
 .icon-list-bullet:before { content: '\f0ca'; } /* '' */
 .icon-user-plus:before { content: '\f234'; } /* '' */

@@ -7,8 +7,9 @@ use GuzzleHttp\Exception\RequestException;
 class ApiOvh
 {
     private $api;
+    private $domain;
 
-    public function __construct($array)
+    public function __construct($global)
     {
         $client = new Client([
             'timeout' => 1,
@@ -18,22 +19,23 @@ class ApiOvh
         ]);
     
         // Initiation de la connexion à l'API OVH
-        $api = new Api($array['application_key'],
-            $array['application_secret'],
-            $array['endpoint'],
-            $array['consumer_key'],
+        $api = new Api($global['application_key'],
+            $global['application_secret'],
+            $global['endpoint'],
+            $global['consumer_key'],
             $client
         );
         
         $this->api = $api;
+        $this->domain = $global['domain'];
     }
 
     /**
      * Récupération de toutes les mailingLists
      */
-    public function index($array)
+    public function index($global)
     {
-        $domain = $array['domain'];
+        $domain = $global['domain'];
 
         try {
             return $this->api->get("/email/domain/$domain/mailingList/");
@@ -44,16 +46,10 @@ class ApiOvh
     }
 
     // Récupération des infos de la mailing list
-    public function show($array)
+    public function show($name)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
-
-        if(! $name)
-            return false;
-
         try {
-            return $this->api->get("/email/domain/$domain/mailingList/$name");
+            return $this->api->get("/email/domain/$this->domain/mailingList/$name");
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
             return false;
@@ -61,35 +57,19 @@ class ApiOvh
     }
 
     // Création d'une mailing list
-    public function create($array)
+    public function create($request)
     {
-        $domain = $array['domain'];
-
-        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
-        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
-        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
-
-        $name = htmlspecialchars($_POST['name']);
-        $replyTo = htmlspecialchars($_POST['replyTo']);
-        $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
-
         try {
-            $this->api->post("/email/domain/$domain/mailingList/", array(
-                'language' => 'fr', // Language of mailing list (type: domain.DomainMlLanguageEnum)
-                'name' => $name, // Mailing list name (type: string)
-                'options' => $options, // Options of mailing list (type: domain.DomainMlOptionsStruct)
-                'ownerEmail' => $ownerEmail, // Owner Email (type: string)
-                'replyTo' => $replyTo, // Email to reply of mailing list (type: string)
-            ));
+            $this->api->post("/email/domain/$this->domain/mailingList/", $request);
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
             unset($_SESSION['form']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            $_SESSION['form']['name'] = $name;
-            $_SESSION['form']['ownerEmail'] = $ownerEmail;
-            $_SESSION['form']['replyTo'] = $replyTo;
+            $_SESSION['form']['name'] = $request['name'];
+            $_SESSION['form']['ownerEmail'] = $request['ownerEmail'];
+            $_SESSION['form']['replyTo'] = $request['replyTo'];
             return false;
         }
     }
@@ -97,11 +77,11 @@ class ApiOvh
     /**
      * Changement des options d'une mailing list
      */
-    // public function changeOptions($array)
+    // public function changeOptions($global)
     // {
-    //     $domain = $array['domain'];
-    //     $name = $array['name'];
-    //     $options = $array['options'];
+    //     $domain = $global['domain'];
+    //     $name = $global['name'];
+    //     $options = $global['options'];
 
     //     try {
     //         $this->api->post("/email/domain/$domain/mailingList/$name/changeOptions", array(
@@ -120,25 +100,13 @@ class ApiOvh
     /**
      * Mise à jour des infos d'une mailing list
      */
-    public function update($array)
+    public function update($name, $request)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
-        $options = $array['options'];
-        $ownerEmail = $array['ownerEmail'];
-        $replyTo = $array['replyTo'];
-
         try {
-            $this->api->post("/email/domain/$domain/mailingList/$name", array(
-                'language' => 'fr', // Language of mailing list (type: domain.DomainMlLanguageEnum)
-                'name' => $name, // Mailing list name (type: string)
-                'options' => $options, // Options of mailing list (type: domain.DomainMlOptionsStruct)
-                'ownerEmail' => $ownerEmail, // Owner Email (type: string)
-                'replyTo' => $replyTo, // Email to reply of mailing list (type: string)
-            ));
+            $this->api->put("/email/domain/$this->domain/mailingList/$name", $request);
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            // unset($_SESSION['form']); 
+            unset($_SESSION['form']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
@@ -147,13 +115,10 @@ class ApiOvh
     }
 
     // Suppression d'une mailing list existante
-    public function delete($array)
+    public function delete($name)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
-
         try {  
-            $this->api->delete("/email/domain/$domain/mailingList/$name");
+            $this->api->delete("/email/domain/$this->domain/mailingList/$name");
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
@@ -169,11 +134,11 @@ class ApiOvh
     /*      GESTION DES ABONNES    */
     /* --------------------------- */
 
-    public function suscriberDelete($array)
+    public function suscriberDelete($global)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
-        $email = $array['email'];
+        $domain = $global['domain'];
+        $name = $global['name'];
+        $email = $global['email'];
 
         try {  
             $this->api->delete("/email/domain/$domain/mailingList/$name/suscriber/$email");
@@ -189,10 +154,10 @@ class ApiOvh
     /*      GESTION DES MODERATEURS    */
     /* ------------------------------- */
 
-    public function moderator($array)
+    public function moderator($global)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
+        $domain = $global['domain'];
+        $name = $global['name'];
 
         if(! $name)
             return false;
@@ -205,11 +170,11 @@ class ApiOvh
         }
     }
 
-    public function moderatorDelete($array)
+    public function moderatorDelete($global)
     {
-        $domain = $array['domain'];
-        $name = $array['name'];
-        $email = $array['email'];
+        $domain = $global['domain'];
+        $name = $global['name'];
+        $email = $global['email'];
 
         try {  
             $this->api->delete("/email/domain/$domain/mailingList/$name/moderator/$email");
