@@ -11,7 +11,7 @@ $contenu = ''; // Layout content
 $referer = $_SERVER['HTTP_REFERER'] ?? '/';
 $messageError = $messageError . " <a class='ml-3 icon-left-outline' href='$referer'>retour</a>";
 
-$name = '';
+$name = $email = '';
 $account = $_SESSION['account'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? 'index';
@@ -54,6 +54,7 @@ $api = new ApiOvh([
     'application_secret' => $applicationSecret,
     'consumer_key' => $consumerKey,
     'endpoint' => $endpoint,
+    'domain' => $domain,
 ]);
 
 // Les données utilisées dans les différentes méthodes des models et controllers
@@ -75,7 +76,11 @@ $controller = $method.'Controller';
 
 // echo $action;exit();
 ob_start();
-$global = $controller::$action($global);
+$global = $controller::$action([
+    'global' => $global,
+    'name' => $name,
+    'email' => $email,
+]);
 $contenu = ob_get_clean();
 
 // $mailingLists = $api->get($global);

@@ -9,8 +9,10 @@ class POSTController
      *
      * @return array
      */
-    public static function create(array $global)
+    public static function create(array $params)
     {
+        $global = $params['global'];
+
         $api = $global['api'];
         // var_dump($global);exit();
         $name = htmlspecialchars($_POST['name']);
@@ -56,10 +58,13 @@ class POSTController
      *
      * @return array
      */
-    public static function update(array $global, $name)
+    public static function update(array $params)
     {
+        $global = $params['global'];
+        $name = $params['name'];
+
         $api = $global['api'];
-        $domain = $global['domain'];
+
         // var_dump($global);exit();
         $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
         $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
@@ -68,17 +73,17 @@ class POSTController
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
 
         $request = [
-            'name' => $name,
-            'options' => $options,
+            // 'options' => $options,
             'replyTo' => $replyTo,
             'ownerEmail' => $ownerEmail,
         ];
 
         $result = $api->update($name, $request);
+        $result = $api->changeOptions($name, $options);
 
         if($result) {
             $class = 'success';
-            $message = "Répondeur créé avec succès !";
+            $message = "Répondeur modifié avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -101,8 +106,10 @@ class POSTController
      * @param  mixed $global
      * @return void
      */
-    public static function index(array $global)
+    public static function index(array $params)
     {
+        $global = $params['global'];
+
         $api = $global['api'];
         $domain = $global['domain'];
         $account = $global['account'];

@@ -9,8 +9,11 @@ class GETController
      *
      * @return array
      */
-    public static function create(array $global)
+    public static function create(array $params)
     {
+        $global = $params['global'];
+
+        
         // Variables utilisées dans la view form.php
         $domain = $global['domain'];
         $account = $global['account'];
@@ -39,14 +42,16 @@ class GETController
      *
      * @return array
      */
-    public static function update(array $global)
+    public static function update(array $params)
     {
+        $global = $params['global'];
+        $name = $params['name'];
+
         $domain = $global['domain'];
         $account = $global['account'];
         $api = $global['api'];
-        $name = $global['name'];
 
-        $mailingList = $api->show($global);
+        $mailingList = $api->show($name);
         
         if($mailingList) {
             // Variables utilisées dans la view form.php
@@ -131,14 +136,16 @@ class GETController
      *
      * @return array
      */
-    public static function index(array $global)
+    public static function index(array $params)
     {
+        $global = $params['global'];
+        
         $api = $global['api'];
         $email = $global['email'];
         $account = $global['account'];
         $mailingLists = []; // Contiendra toutes les listes dans lesquelles le $account est modérateur (ou propriétaire)
 
-        $lists = $api->index($global);
+        $lists = $api->index();
         foreach ($lists as $mailingList) {
             $global['name'] = $mailingList;
             $moderators = $api->moderator($global);

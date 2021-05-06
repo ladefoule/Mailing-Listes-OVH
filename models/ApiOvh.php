@@ -9,7 +9,7 @@ class ApiOvh
     private $api;
     private $domain;
 
-    public function __construct($global)
+    public function __construct($params)
     {
         $client = new Client([
             'timeout' => 1,
@@ -19,26 +19,24 @@ class ApiOvh
         ]);
     
         // Initiation de la connexion à l'API OVH
-        $api = new Api($global['application_key'],
-            $global['application_secret'],
-            $global['endpoint'],
-            $global['consumer_key'],
+        $api = new Api($params['application_key'],
+            $params['application_secret'],
+            $params['endpoint'],
+            $params['consumer_key'],
             $client
         );
         
         $this->api = $api;
-        $this->domain = $global['domain'];
+        $this->domain = $params['domain'];
     }
 
     /**
      * Récupération de toutes les mailingLists
      */
-    public function index($global)
+    public function index()
     {
-        $domain = $global['domain'];
-
         try {
-            return $this->api->get("/email/domain/$domain/mailingList/");
+            return $this->api->get("/email/domain/$this->domain/mailingList/");
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
             return false;
@@ -77,25 +75,21 @@ class ApiOvh
     /**
      * Changement des options d'une mailing list
      */
-    // public function changeOptions($global)
-    // {
-    //     $domain = $global['domain'];
-    //     $name = $global['name'];
-    //     $options = $global['options'];
+    public function changeOptions($name, $options)
+    {
+        try {
+            $this->api->post("/email/domain/$this->domain/mailingList/$name/changeOptions", array(
+                'options' => $options
+            ));
 
-    //     try {
-    //         $this->api->post("/email/domain/$domain/mailingList/$name/changeOptions", array(
-    //             'options' => $options
-    //         ));
-
-    //         // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-    //         // unset($_SESSION['form']); 
-    //         return true;
-    //     } catch (RequestException $e) {
-    //         error_log($e->getResponse()->getBody()->getContents());
-    //         return false;
-    //     }
-    // }
+            // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
+            unset($_SESSION['form']); 
+            return true;
+        } catch (RequestException $e) {
+            error_log($e->getResponse()->getBody()->getContents());
+            return false;
+        }
+    }
 
     /**
      * Mise à jour des infos d'une mailing list
