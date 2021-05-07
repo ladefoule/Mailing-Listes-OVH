@@ -61,13 +61,13 @@ class ApiOvh
             $this->api->post("/email/domain/$this->domain/mailingList/", $request);
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['form']); 
+            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            $_SESSION['form']['name'] = $request['name'];
-            $_SESSION['form']['ownerEmail'] = $request['ownerEmail'];
-            $_SESSION['form']['replyTo'] = $request['replyTo'];
+            $_SESSION['mailing-list']['name'] = $request['name'];
+            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
+            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
             return false;
         }
     }
@@ -83,7 +83,7 @@ class ApiOvh
             ));
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['form']); 
+            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
@@ -100,10 +100,12 @@ class ApiOvh
             $this->api->put("/email/domain/$this->domain/mailingList/$name", $request);
 
             // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['form']); 
+            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
+            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
+            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
             return false;
         }
     }
@@ -128,6 +130,20 @@ class ApiOvh
     {
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/$name/subscriber");
+        } catch (RequestException $e) {
+            error_log($e->getResponse()->getBody()->getContents());
+            return false;
+        }
+    }
+
+    public function subscriberCreate($name, $email)
+    {
+        try {
+            $this->api->post("/email/domain/$this->domain/mailingList/$name/subscriber", [
+                'email' => $email
+            ]);
+
+            return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
             return false;

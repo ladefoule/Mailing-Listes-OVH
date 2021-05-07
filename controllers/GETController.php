@@ -3,6 +3,44 @@
 class GETController
 {
     /**
+     * Method index
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function index(array $params)
+    {
+        $global = $params['global'];
+        
+        $api = $global['api'];
+        $domain = $global['domain'];
+        $account = $global['account'];
+        $email = $account .'@'. $domain;
+
+        $mailingLists = []; // Contiendra toutes les listes dans lesquelles le $account est modérateur (ou propriétaire)
+        $lists = $api->index();
+        foreach ($lists as $mailingList) {
+            $moderators = $api->moderator($mailingList);
+
+            if(in_array($email, $moderators))
+                $mailingLists[] = $mailingList;
+        }
+        
+        // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
+        unset($_SESSION['mailing-list']); 
+        
+        if($account){
+            // $mailingLists = $api->all($global);
+            // var_dump($lists);exit();
+            include('../views/logged.php');
+        }else
+            include('../views/login.php');
+
+        return $global;
+    }
+
+    /**
      * Method create
      *
      * @param array $global
@@ -17,18 +55,17 @@ class GETController
         // Variables utilisées dans la view form.php
         $domain = $global['domain'];
         $account = $global['account'];
-        $email = $global['email'];
 
         $moderatorMessage = $moderatorMessage = $moderatorMessage = false;
         $name = $ownerEmail = $replyTo = '';
 
-        if(isset($_SESSION['form'])){
-            $moderatorMessage = $_SESSION['form']['moderatorMessage'] ?? '';
-            $subscribeByModerator = $_SESSION['form']['subscribeByModerator'] ?? '';
-            $usersPostOnly = $_SESSION['form']['usersPostOnly'] ?? '';
-            $replyTo = $_SESSION['form']['replyTo'] ?? '';
-            $ownerEmail = $_SESSION['form']['ownerEmail'] ?? '';
-            $name = $_SESSION['form']['name'] ?? '';
+        if(isset($_SESSION['mailing-list'])){
+            $moderatorMessage = $_SESSION['mailing-list']['moderatorMessage'] ?? '';
+            $subscribeByModerator = $_SESSION['mailing-list']['subscribeByModerator'] ?? '';
+            $usersPostOnly = $_SESSION['mailing-list']['usersPostOnly'] ?? '';
+            $replyTo = $_SESSION['mailing-list']['replyTo'] ?? '';
+            $ownerEmail = $_SESSION['mailing-list']['ownerEmail'] ?? '';
+            $name = $_SESSION['mailing-list']['name'] ?? '';
         }
         
         include('../views/form/mailing-list.php');
@@ -165,48 +202,10 @@ class GETController
         $global['account'] = '';
         return $global;
     }
-    
-    /**
-     * Method index
-     *
-     * @param array $global
-     *
-     * @return array
-     */
-    public static function index(array $params)
-    {
-        $global = $params['global'];
-        
-        $api = $global['api'];
-        $email = $global['email'];
-        $account = $global['account'];
-        $mailingLists = []; // Contiendra toutes les listes dans lesquelles le $account est modérateur (ou propriétaire)
 
-        $lists = $api->index();
-        foreach ($lists as $mailingList) {
-            $moderators = $api->moderator($mailingList);
-
-            if(in_array($email, $moderators))
-                $mailingLists[] = $mailingList;
-        }
-            
-
-        // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-        unset($_SESSION['form']); 
-
-        // Variables utilisées dans la view logged.php
-        $name = $global['name'];
-        $domain = $global['domain'];
-        
-        if($account){
-            // $mailingLists = $api->all($global);
-            // var_dump($lists);exit();
-            include('../views/logged.php');
-        }else
-            include('../views/login.php');
-
-        return $global;
-    }
+    /* --------------------------- */
+    /*      GESTION DES ABONNES    */
+    /* --------------------------- */
 
     /**
      * Method index
@@ -227,6 +226,63 @@ class GETController
         
         include('../views/subscriber.php');
 
+        return $global;
+    }
+
+    /**
+     * Method subscriberCreate
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function subscriberCreate(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $action = $global['action'];
+        $domain = $global['domain'];
+
+        $email = '';
+
+        if(isset($_SESSION['subscriber'])){
+            $email = $_SESSION['subscriber']['email'] ?? '';
+        }
+        
+        include('../views/form/subscriber.php');
+        return $global;
+    }
+
+    /**
+     * Method index
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function subscriberDelete(array $params)
+    {
+        $global = $params['global'];
+        $email = $params['email'];
+        
+        $api = $global['api'];
+        $name = $global['name'];
+        $domain = $global['domain'];
+        
+        $result = $api->subscriberDelete($name, $email);
+
+        if($result) {
+            $class = 'success';
+            $message = "L'email $email a été supprimé de la liste avec succès ! (effectif dans 5 secondes)";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        $emails = $api->subscriber($name);  
+        include('../views/subscriber.php');
         return $global;
     }
 }

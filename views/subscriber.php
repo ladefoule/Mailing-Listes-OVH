@@ -18,12 +18,7 @@
                                 echo "<td>" . ($i+1) . "</td>";
                                 echo "<td class='text-left'>" . $email . "</td>";
                                 echo "<td>
-                                            <a class='btn-sm btn-info' href='/$email/update' title='Modifier'><span class='icon-pencil'></span></a>
-                                            <a class='btn-sm btn-info' href='/$email/options' title='Modifier les options'><span class='icon-check'></span></a>
-                                            <a class='btn-sm btn-danger' href='/$email/delete'><span class='icon-trash-empty'></span></a>
-                                    </td>";
-                                echo "<td>
-                                        <a class='btn-sm btn-primary' href='/$email/suscriber/create'><span class='icon-trash-empty'></span></a>
+                                        <a class='btn-sm btn-danger' href='/$name/subscriber/$email/delete' title=\"Supprimer l'abonné\"><span class='icon-trash-empty'></span></a>
                                     </td>";
                             echo '</tr>';
                         }

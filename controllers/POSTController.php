@@ -64,7 +64,7 @@ class POSTController
         $name = $params['name'];
 
         $api = $global['api'];
-        
+
         $replyTo = htmlspecialchars($_POST['replyTo']);
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
 
@@ -170,6 +170,46 @@ class POSTController
             include('../views/logged.php');
         }
 
+        return $global;
+    }
+
+    /* --------------------------- */
+    /*      GESTION DES ABONNES    */
+    /* --------------------------- */
+
+    /**
+     * Method subscriberCreate
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function subscriberCreate(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+        $api = $global['api'];
+
+        $email = htmlspecialchars($_POST['email']);
+
+        $result = $api->subscriberCreate($name, $email);
+
+        if($result) {
+            $class = 'success';
+            $message = "Nouvel abonné créé avec succès !";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        // Variables utilisées dans la view logged.php
+        $action = $global['action'];
+        $account = $global['account'];
+        $domain = $global['domain'];
+
+        $mailingLists = $api->index($global);
+        include('../views/logged.php');
         return $global;
     }
 }
