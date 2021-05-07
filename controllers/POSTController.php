@@ -52,7 +52,7 @@ class POSTController
     }
 
     /**
-     * Method create
+     * Mise à jour des infos de la mailingList
      *
      * @param array $global
      *
@@ -64,11 +64,7 @@ class POSTController
         $name = $params['name'];
 
         $api = $global['api'];
-
-        // var_dump($global);exit();
-        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
-        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
-        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
+        
         $replyTo = htmlspecialchars($_POST['replyTo']);
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
 
@@ -79,11 +75,50 @@ class POSTController
         ];
 
         $result = $api->update($name, $request);
+
+        if($result) {
+            $class = 'success';
+            $message = "MailingList modifiée avec succès !";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        // Variables utilisées dans la view logged.php
+        $action = $global['action'];
+        $account = $global['account'];
+        $domain = $global['domain'];
+
+        $mailingLists = $api->index($global);
+        include('../views/logged.php');
+        return $global;
+    }
+
+    /**
+     * Mise à jour des options de la mailingList
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function options(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $api = $global['api'];
+
+        // var_dump($global);exit();
+        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
+        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
+
         $result = $api->changeOptions($name, $options);
 
         if($result) {
             $class = 'success';
-            $message = "Répondeur modifié avec succès !";
+            $message = "Options mis à jour avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];

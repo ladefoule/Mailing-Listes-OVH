@@ -116,10 +116,6 @@ class ApiOvh
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            // $response = $e->getResponse();
-            // $responseBodyAsString = $response->getBody()->getContents();
-            // echo $responseBodyAsString;
-            
             return false;
         }
     }
@@ -128,18 +124,13 @@ class ApiOvh
     /*      GESTION DES ABONNES    */
     /* --------------------------- */
 
-    public function suscriberDelete($global)
+    public function suscriberDelete($name, $email)
     {
-        $domain = $global['domain'];
-        $name = $global['name'];
-        $email = $global['email'];
-
         try {  
-            $this->api->delete("/email/domain/$domain/mailingList/$name/suscriber/$email");
+            $this->api->delete("/email/domain/$this->domain/mailingList/$name/suscriber/$email");
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            
             return false;
         }
     }
@@ -148,34 +139,23 @@ class ApiOvh
     /*      GESTION DES MODERATEURS    */
     /* ------------------------------- */
 
-    public function moderator($global)
+    public function moderator($name)
     {
-        $domain = $global['domain'];
-        $name = $global['name'];
-
-        if(! $name)
-            return false;
-
         try {
-            return $this->api->get("/email/domain/$domain/mailingList/$name/moderator");
+            return $this->api->get("/email/domain/$this->domain/mailingList/$name/moderator");
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
             return false;
         }
     }
 
-    public function moderatorDelete($global)
+    public function moderatorDelete($name, $email)
     {
-        $domain = $global['domain'];
-        $name = $global['name'];
-        $email = $global['email'];
-
         try {  
-            $this->api->delete("/email/domain/$domain/mailingList/$name/moderator/$email");
+            $this->api->delete("/email/domain/$this->domain/mailingList/$name/moderator/$email");
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            
             return false;
         }
     }

@@ -12,7 +12,7 @@ class GETController
     public static function create(array $params)
     {
         $global = $params['global'];
-
+        $action = $global['action'];
         
         // Variables utilisées dans la view form.php
         $domain = $global['domain'];
@@ -31,7 +31,7 @@ class GETController
             $name = $_SESSION['form']['name'] ?? '';
         }
         
-        include('../views/form.php');
+        include('../views/form/mailing-list.php');
         return $global;
     }
     
@@ -50,6 +50,7 @@ class GETController
         $domain = $global['domain'];
         $account = $global['account'];
         $api = $global['api'];
+        $action = $global['action'];
 
         $mailingList = $api->show($name);
         
@@ -63,7 +64,43 @@ class GETController
             $ownerEmail = $mailingList['ownerEmail'];
             // $content = htmlentities($mailingList['content']);
 
-            include('../views/form.php');
+            include('../views/form/mailing-list.php');
+        } else {
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+            include('../views/notification.php');
+
+            include('../views/logged.php');
+        }
+
+        return $global;
+    }
+
+    /**
+     * Method options
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function options(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $domain = $global['domain'];
+        $account = $global['account'];
+        $api = $global['api'];
+        $action = $global['action'];
+
+        $mailingList = $api->show($name);
+        
+        if($mailingList) {
+            $usersPostOnly = $mailingList['options']['usersPostOnly'];
+            $moderatorMessage = $mailingList['options']['moderatorMessage'];
+            $subscribeByModerator = $mailingList['options']['subscribeByModerator'];
+
+            include('../views/form/mailing-list.php');
         } else {
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -147,8 +184,7 @@ class GETController
 
         $lists = $api->index();
         foreach ($lists as $mailingList) {
-            $global['name'] = $mailingList;
-            $moderators = $api->moderator($global);
+            $moderators = $api->moderator($mailingList);
 
             if(in_array($email, $moderators))
                 $mailingLists[] = $mailingList;

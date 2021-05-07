@@ -20,7 +20,8 @@
                                 echo "<td>" . ($i+1) . "</td>";
                                 echo "<td class='text-left'>" . $mailingList . "</td>";
                                 echo "<td>
-                                            <a class='btn-sm btn-info' href='/$mailingList/update'><span class='icon-edit'></span></a>
+                                            <a class='btn-sm btn-info' href='/$mailingList/update' title='Modifier'><span class='icon-pencil'></span></a>
+                                            <a class='btn-sm btn-info' href='/$mailingList/options' title='Modifier les options'><span class='icon-check'></span></a>
                                             <a class='btn-sm btn-danger' href='/$mailingList/delete'><span class='icon-trash-empty'></span></a>
                                     </td>";
                                 echo "<td>
