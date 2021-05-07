@@ -31,7 +31,7 @@ class ApiOvh
     }
 
     /**
-     * Récupération de toutes les mailingLists
+     * Récupération de toutes les mailingLists du compte OVH
      */
     public function index()
     {
@@ -41,6 +41,26 @@ class ApiOvh
             error_log($e->getResponse()->getBody()->getContents());
             return false;
         }
+    }
+
+    /**
+     * Les mailingLists pour lesquelles le $account est modérateur (ou propriétaire)
+     */
+    public function indexAccount($account)
+    {
+        $mailingLists = [];
+        $lists = $this->index();
+        $email = $account .'@'. $this->domain;
+
+        if($lists !== false)
+            foreach ($lists as $mailingList) {
+                $moderators = $this->moderator($mailingList);
+
+                if(in_array($email, $moderators))
+                    $mailingLists[] = $mailingList;
+            }
+
+        return $mailingLists;
     }
 
     // Récupération des infos de la mailing list
@@ -169,6 +189,26 @@ class ApiOvh
     {
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/$name/moderator");
+        } catch (RequestException $e) {
+            error_log($e->getResponse()->getBody()->getContents());
+            return false;
+        }
+    }
+    
+    public function isModerator($name, $email)
+    {
+        $moderators = $this->moderator($name);
+        return in_array($email, $moderators);
+    }
+
+    public function moderatorCreate($name, $email)
+    {
+        try {
+            $this->api->post("/email/domain/$this->domain/mailingList/$name/moderator", [
+                'email' => $email
+            ]);
+
+            return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
             return false;

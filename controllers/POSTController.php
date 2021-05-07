@@ -14,7 +14,6 @@ class POSTController
         $global = $params['global'];
 
         $api = $global['api'];
-        // var_dump($global);exit();
         $name = htmlspecialchars($_POST['name']);
         $replyTo = htmlspecialchars($_POST['replyTo']);
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
@@ -34,7 +33,7 @@ class POSTController
 
         if($result) {
             $class = 'success';
-            $message = "Répondeur créé avec succès !";
+            $message = "MailingList créée avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -63,17 +62,15 @@ class POSTController
         $global = $params['global'];
         $name = $params['name'];
 
-        $api = $global['api'];
-
         $replyTo = htmlspecialchars($_POST['replyTo']);
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
-
+        
         $request = [
-            // 'options' => $options,
             'replyTo' => $replyTo,
             'ownerEmail' => $ownerEmail,
         ];
-
+        
+        $api = $global['api'];
         $result = $api->update($name, $request);
 
         if($result) {
@@ -107,18 +104,16 @@ class POSTController
         $global = $params['global'];
         $name = $params['name'];
 
-        $api = $global['api'];
-
-        // var_dump($global);exit();
         $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
         $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
         $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
-
+        
+        $api = $global['api'];
         $result = $api->changeOptions($name, $options);
 
         if($result) {
             $class = 'success';
-            $message = "Options mis à jour avec succès !";
+            $message = "Options mises à jour avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -166,7 +161,7 @@ class POSTController
             $_SESSION['account'] = $account; // On active la SESSION
             $global['account'] = $account; // On met à jour la variable $global
             
-            $responder = $api->index($global);
+            $mailingLists = $api->indexAccount($account);
             include('../views/logged.php');
         }
 
@@ -188,15 +183,53 @@ class POSTController
     {
         $global = $params['global'];
         $name = $params['name'];
+
         $api = $global['api'];
-
         $email = htmlspecialchars($_POST['email']);
-
         $result = $api->subscriberCreate($name, $email);
 
         if($result) {
             $class = 'success';
-            $message = "Nouvel abonné créé avec succès !";
+            $message = "Nouvel abonné ajouté avec succès !";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        // Variables utilisées dans la view logged.php
+        $action = $global['action'];
+        $account = $global['account'];
+        $domain = $global['domain'];
+
+        $mailingLists = $api->index($global);
+        include('../views/logged.php');
+        return $global;
+    }
+
+    /* ------------------------------- */
+    /*      GESTION DES MODERATEURS    */
+    /* ------------------------------- */
+
+    /**
+     * Method moderatorCreate
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function moderatorCreate(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $api = $global['api'];
+        $email = htmlspecialchars($_POST['email']);
+        $result = $api->moderatorCreate($name, $email);
+
+        if($result) {
+            $class = 'success';
+            $message = "Le modérateur a été ajouté avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];

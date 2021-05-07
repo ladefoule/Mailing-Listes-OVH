@@ -64,7 +64,6 @@ $global = [
     // 'email' => $account.'@'.$domain,
     'name' => $name,
     'api' => $api,
-    'site' => $site,
     'action' => $action,
     'imap_server' => $imapServer,
     'class_error' => $classError,
@@ -73,15 +72,23 @@ $global = [
 
 $controller = $method.'Controller';
 
-
-// echo $action;exit();
-ob_start();
-$global = $controller::$action([
-    'global' => $global,
-    'name' => $name,
-    'email' => $email,
-]);
-$contenu = ob_get_clean();
+// Pour éviter d'agir sur une liste sur laquelle l'utilisateur n'est pas modérateur
+if($name && ! $api->isModerator($name, $account.'@'.$domain)){
+    $class = $global['class_error'];
+    $message = $global['message_error'];
+    ob_start();
+    include('../views/notification.php');
+    $contenu = ob_get_clean();
+}else{
+    // echo $action;exit();
+    ob_start();
+    $global = $controller::$action([
+        'global' => $global,
+        'name' => $name,
+        'email' => $email,
+    ]);
+    $contenu = ob_get_clean();
+}
 
 // $mailingLists = $api->get($global);
 $account = $global['account'];

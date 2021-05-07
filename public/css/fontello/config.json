@@ -71,6 +71,18 @@
       "css": "list-bullet",
       "code": 61642,
       "src": "fontawesome"
+    },
+    {
+      "uid": "44e04715aecbca7f266a17d5a7863c68",
+      "css": "plus",
+      "code": 59400,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ec3be32c1330a17ef251b378ebd7d3ac",
+      "css": "left-outline",
+      "code": 59401,
+      "src": "typicons"
     }
   ]
 }

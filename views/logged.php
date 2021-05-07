@@ -1,17 +1,17 @@
 <div class="col-lg-9 p-0">
     <div class="card">
         <div class="card-header p-3">
-            Gestion des mailing lists
+            <span class='icon-mail'></span> Gestion des mailing lists
         </div>
         <div class="card-body">
             <div class="col-12 px-0">
                 <table class="table table-striped text-center">
                     <thead>
-                        <th>#</th>
-                        <th>Email</th>
-                        <th>Mailing List</th>
-                        <th>Abonnés</th>
-                        <th>Modérateurs</th>
+                        <th class="border-0">#</th>
+                        <th class="border-0 text-left">Liste</th>
+                        <th class="border-0">Actions</th>
+                        <th class="border-0">Abonnés</th>
+                        <th class="border-0">Modérateurs</th>
                     </thead>
                     <tbody>
                     <?php
@@ -39,8 +39,8 @@
                 </table>
             </div>
 
-            <div class="col-12">
-                <a href="/create" class="btn-sm btn-primary"><span class='icon-list-add'></span> Nouvelle liste</a>
+            <div class="col-12 px-0">
+                <a href="/create" class="btn-sm btn-primary text-decoration-none"><span class='icon-list-add'></span> Nouvelle liste</a>
             </div>
         </div>
     </div>

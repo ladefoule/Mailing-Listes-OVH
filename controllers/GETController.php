@@ -16,23 +16,14 @@ class GETController
         $api = $global['api'];
         $domain = $global['domain'];
         $account = $global['account'];
-        $email = $account .'@'. $domain;
 
-        $mailingLists = []; // Contiendra toutes les listes dans lesquelles le $account est modérateur (ou propriétaire)
-        $lists = $api->index();
-        foreach ($lists as $mailingList) {
-            $moderators = $api->moderator($mailingList);
-
-            if(in_array($email, $moderators))
-                $mailingLists[] = $mailingList;
-        }
-        
-        // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
+        // On supprime les données des formulaires potentiellement sauvegardées dans la SESSION
         unset($_SESSION['mailing-list']); 
+        unset($_SESSION['subscriber']); 
+        unset($_SESSION['moderator']); 
         
         if($account){
-            // $mailingLists = $api->all($global);
-            // var_dump($lists);exit();
+            $mailingLists = $api->indexAccount($account);
             include('../views/logged.php');
         }else
             include('../views/login.php');
@@ -50,9 +41,9 @@ class GETController
     public static function create(array $params)
     {
         $global = $params['global'];
-        $action = $global['action'];
         
         // Variables utilisées dans la view form.php
+        $action = $global['action'];
         $domain = $global['domain'];
         $account = $global['account'];
 
@@ -208,7 +199,7 @@ class GETController
     /* --------------------------- */
 
     /**
-     * Method index
+     * Liste des abonnés de la liste $name
      *
      * @param array $global
      *
@@ -217,20 +208,25 @@ class GETController
     public static function subscriber(array $params)
     {
         $global = $params['global'];
+        $name = $params['name'];
         
         $api = $global['api'];
-        $name = $global['name'];
         $domain = $global['domain'];
 
-        $emails = $api->subscriber($name);            
+        $emails = $api->subscriber($name);
         
-        include('../views/subscriber.php');
+        if($emails == false){
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+            include('../views/notification.php');
+        }else
+            include('../views/subscriber.php');
 
         return $global;
     }
 
     /**
-     * Method subscriberCreate
+     * Ajout d'un abonné dans la liste $name
      *
      * @param array $params
      *
@@ -255,7 +251,7 @@ class GETController
     }
 
     /**
-     * Method index
+     * Suppression de l'abonné $email de la liste $name
      *
      * @param array $global
      *
@@ -265,10 +261,11 @@ class GETController
     {
         $global = $params['global'];
         $email = $params['email'];
+        $name = $params['name'];
         
         $api = $global['api'];
-        $name = $global['name'];
         $domain = $global['domain'];
+        $account = $global['account'];
         
         $result = $api->subscriberDelete($name, $email);
 
@@ -283,6 +280,90 @@ class GETController
 
         $emails = $api->subscriber($name);  
         include('../views/subscriber.php');
+
+        return $global;
+    }
+
+    /* ------------------------------- */
+    /*      GESTION DES MODERATEURS    */
+    /* ------------------------------- */
+
+    /**
+     * Liste des modérateurs de la liste $name
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function moderator(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+        
+        $api = $global['api'];
+        $domain = $global['domain'];
+
+        $emails = $api->moderator($name);            
+        
+        include('../views/moderator.php');
+
+        return $global;
+    }
+
+    /**
+     * Ajout d'un modérateur à la liste $name
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function moderatorCreate(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $action = $global['action'];
+        $domain = $global['domain'];
+
+        $email = '';
+
+        if(isset($_SESSION['moderator'])){
+            $email = $_SESSION['moderator']['email'] ?? '';
+        }
+        
+        include('../views/form/moderator.php');
+        return $global;
+    }
+
+    /**
+     * Suppression d'un modérateur dans la liste $name
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function moderatorDelete(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+        $email = $params['email'];
+        
+        $api = $global['api'];
+        $domain = $global['domain'];
+        
+        $result = $api->moderatorDelete($name, $email);
+
+        if($result) {
+            $class = 'success';
+            $message = "L'email $email a été supprimé de la liste avec succès ! (effectif dans 5 secondes)";
+        }else{                        
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+        }
+        include('../views/notification.php');
+
+        $emails = $api->moderator($name);  
+        include('../views/moderator.php');
         return $global;
     }
 }
