@@ -11,7 +11,7 @@ $contenu = ''; // Layout content
 $referer = $_SERVER['HTTP_REFERER'] ?? '/';
 $messageError = $messageError . " <a class='ml-3 icon-left-outline' href='$referer'>retour</a>";
 
-$name = $email = '';
+$name = $email = ''; $emails = [];
 $account = $_SESSION['account'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? 'index';

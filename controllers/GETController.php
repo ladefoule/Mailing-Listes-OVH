@@ -207,4 +207,26 @@ class GETController
 
         return $global;
     }
+
+    /**
+     * Method index
+     *
+     * @param array $global
+     *
+     * @return array
+     */
+    public static function subscriber(array $params)
+    {
+        $global = $params['global'];
+        
+        $api = $global['api'];
+        $name = $global['name'];
+        $domain = $global['domain'];
+
+        $emails = $api->subscriber($name);            
+        
+        include('../views/subscriber.php');
+
+        return $global;
+    }
 }

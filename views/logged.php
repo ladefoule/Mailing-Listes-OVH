@@ -18,15 +18,15 @@
                         foreach ($mailingLists as $i => $mailingList) {
                             echo '<tr>';
                                 echo "<td>" . ($i+1) . "</td>";
-                                echo "<td class='text-left'>" . $mailingList . "</td>";
+                                echo "<td class='text-left'>" . $mailingList . "@" . $domain . "</td>";
                                 echo "<td>
                                             <a class='btn-sm btn-info' href='/$mailingList/update' title='Modifier'><span class='icon-pencil'></span></a>
                                             <a class='btn-sm btn-info' href='/$mailingList/options' title='Modifier les options'><span class='icon-check'></span></a>
                                             <a class='btn-sm btn-danger' href='/$mailingList/delete'><span class='icon-trash-empty'></span></a>
                                     </td>";
                                 echo "<td>
-                                        <a class='btn-sm btn-info' href='/$mailingList/suscriber'><span class='icon-list-bullet'></span></a>
-                                        <a class='btn-sm btn-primary' href='/$mailingList/suscriber/create'><span class='icon-user-plus'></span></a>
+                                        <a class='btn-sm btn-info' href='/$mailingList/subscriber'><span class='icon-list-bullet'></span></a>
+                                        <a class='btn-sm btn-primary' href='/$mailingList/subscriber/create'><span class='icon-user-plus'></span></a>
                                 </td>";
                                 echo "<td>
                                         <a class='btn-sm btn-info' href='/$mailingList/moderator'><span class='icon-list-bullet'></span></a>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="col-12">
-                <a href="/create" class="btn-sm btn-primary">Créer une mailing list</a>
+                <a href="/create" class="btn-sm btn-primary"><span class='icon-list-add'></span> Nouvelle liste</a>
             </div>
         </div>
     </div>

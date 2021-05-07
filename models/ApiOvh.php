@@ -124,10 +124,20 @@ class ApiOvh
     /*      GESTION DES ABONNES    */
     /* --------------------------- */
 
-    public function suscriberDelete($name, $email)
+    public function subscriber($name)
+    {
+        try {
+            return $this->api->get("/email/domain/$this->domain/mailingList/$name/subscriber");
+        } catch (RequestException $e) {
+            error_log($e->getResponse()->getBody()->getContents());
+            return false;
+        }
+    }
+
+    public function subscriberDelete($name, $email)
     {
         try {  
-            $this->api->delete("/email/domain/$this->domain/mailingList/$name/suscriber/$email");
+            $this->api->delete("/email/domain/$this->domain/mailingList/$name/subscriber/$email");
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
