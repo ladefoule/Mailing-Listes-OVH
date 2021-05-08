@@ -48,7 +48,8 @@ class GETController
         $account = $global['account'];
 
         $moderatorMessage = $moderatorMessage = $moderatorMessage = false;
-        $name = $ownerEmail = $replyTo = '';
+        $name = $replyTo = '';
+        $ownerEmail = $account .'@'. $domain;
 
         if(isset($_SESSION['mailing-list'])){
             $moderatorMessage = $_SESSION['mailing-list']['moderatorMessage'] ?? '';
@@ -79,6 +80,7 @@ class GETController
         $domain = $global['domain'];
 
         $mailingList = $api->show($name);
+        $mailingList['nbModerators'] = count($api->moderator($name));
 
         include('../views/show-mailing-list.php');
 
@@ -165,17 +167,20 @@ class GETController
     /**
      * Method delete
      *
-     * @param array $global
+     * @param array $params
      *
      * @return array
      */
-    public static function delete(array $global)
+    public static function delete(array $params)
     {
+        $global = $params['global'];
+        $name = $params['name'];
+
         $api = $global['api'];
-        $result = $api->delete($global);
+        $result = $api->delete($name);
         if($result) {  
             $class = 'success';
-            $message = "Répondeur supprimé avec succès !";
+            $message = "MailingList supprimée avec succès !";
         }else{            
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -185,7 +190,7 @@ class GETController
         // Variables utilisées dans la view logged.php
         $account = $global['account'];
         $domain = $global['domain'];
-        $mailingLists = $api->get($global);
+        $mailingLists = $api->indexAccount($account);
 
         include('../views/logged.php');
 
@@ -195,13 +200,14 @@ class GETController
     /**
      * Method logout
      *
-     * @param array $global
+     * @param array $params
      *
      * @return array
      */
-    public static function logout(array $global)
+    public static function logout(array $params)
     {
         session_destroy();
+        $global = $params['global'];
         
         $message = "Vous êtes déconnecté.";
         $class = "success";
@@ -237,7 +243,7 @@ class GETController
 
         $emails = $api->subscriber($name);
         
-        if($emails == false){
+        if($emails === false){
             $class = $global['class_error'];
             $message = $global['message_error'];
             include('../views/notification.php');
@@ -325,10 +331,15 @@ class GETController
         $api = $global['api'];
         $domain = $global['domain'];
 
-        $emails = $api->moderator($name);            
+        $emails = $api->moderator($name);
         
-        include('../views/moderator.php');
-
+        if($emails === false){
+            $class = $global['class_error'];
+            $message = $global['message_error'];
+            include('../views/notification.php');
+        }else
+            include('../views/moderator.php');
+        
         return $global;
     }
 

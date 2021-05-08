@@ -82,12 +82,9 @@ class POSTController
         }
         include('../views/notification.php');
 
-        // Variables utilisées dans la view logged.php
-        $action = $global['action'];
         $account = $global['account'];
         $domain = $global['domain'];
-
-        $mailingLists = $api->index($global);
+        $mailingLists = $api->indexAccount($account);
         include('../views/logged.php');
         return $global;
     }
@@ -120,12 +117,9 @@ class POSTController
         }
         include('../views/notification.php');
 
-        // Variables utilisées dans la view logged.php
-        $action = $global['action'];
         $account = $global['account'];
         $domain = $global['domain'];
-
-        $mailingLists = $api->index($global);
+        $mailingLists = $api->indexAccount($account);
         include('../views/logged.php');
         return $global;
     }
@@ -156,12 +150,17 @@ class POSTController
             include('../views/login.php');
         }else{
             // Variables utilisées dans la view logged.php
-            $account = htmlspecialchars($_POST['account']);
+            $account = htmlspecialchars(strtolower($_POST['account']));
             
             $_SESSION['account'] = $account; // On active la SESSION
             $global['account'] = $account; // On met à jour la variable $global
             
             $mailingLists = $api->indexAccount($account);
+
+            $class = 'info';
+            $message = "Les différentes actions concernant les mailing lists (création d'une liste ou ajout d'un abonné par exemple) peuvent mettre plusieurs secondes avant d'être traitées par OVH. Si vous recevez un message de succès de votre requête, inutile donc de la renouveler même si le résultat n'est pas de suite visible.";
+            include('../views/notification.php');
+
             include('../views/logged.php');
         }
 

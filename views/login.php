@@ -1,4 +1,4 @@
-<div class="col-lg-8 p-0">
+<div class="col-lg-9 p-0">
     <div class="card">
         <div class="card-header p-3">
             Connexion

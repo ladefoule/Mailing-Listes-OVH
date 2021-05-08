@@ -1,11 +1,14 @@
 <?php 
+    // var_dump($mailingList);exit();
     $name = $mailingList['name'];
     $replyTo = $mailingList['replyTo'];
     $ownerEmail = $mailingList['ownerEmail'];
     $nbSubscribers = $mailingList['nbSubscribers'];
-    $subscribeByModerator = $mailingList['subscribeByModerator'];
-    $usersPostOnly = $mailingList['usersPostOnly'];
-    $moderatorMessage = $mailingList['moderatorMessage'];
+    $nbModerators = $mailingList['nbModerators'];
+    $subscribeByModerator = $mailingList['options']['subscribeByModerator'];
+    $usersPostOnly = $mailingList['options']['usersPostOnly'];
+    $moderatorMessage = $mailingList['options']['moderatorMessage'];
+    $nbSubscribersUpdateDate = new DateTime($mailingList['nbSubscribersUpdateDate']);
 ?>
 <div class="col-lg-8 p-0">
     <div class="card">
@@ -24,9 +27,6 @@
                 </button>
             </a>
         </div>
-        <?php
-            // var_dump($mailingList);exit();
-        ?>
         <div class="card-body">
             <ul class="list-group mb-3">
                 <li class="list-group-item disabled" aria-disabled="true">Liste</li>
@@ -45,7 +45,12 @@
 
             <ul class="list-group mb-3">
                 <li class="list-group-item disabled" aria-disabled="true">Les abonnés</li>
-                <li class="list-group-item"><a href="/<?php echo $name ?>/subscriber"><?php echo $nbSubscribers ?> abonnés</a> (mis à jour le )</li>
+                <li class="list-group-item"><a href="/<?php echo $name ?>/subscriber"><?php echo $nbSubscribers ?> abonné<?php echo ($nbSubscribers > 1) ? 's' : '' ?></a> (mis à jour le <?php echo $nbSubscribersUpdateDate->format('d/m/Y') ?>)</li>
+            </ul>
+            
+            <ul class="list-group mb-3">
+                <li class="list-group-item disabled" aria-disabled="true">Les modérateurs</li>
+                <li class="list-group-item"><a href="/<?php echo $name ?>/moderator"><?php echo $nbModerators ?> modérateur<?php echo ($nbModerators > 1) ? 's' : '' ?></a></li>
             </ul>
 
             <ul class="list-group mb-3">
@@ -62,6 +67,8 @@
                 <li class="list-group-item disabled" aria-disabled="true">Restreint l'envoi d'e-mails sur la mailing list aux seules abonnés de celle-ci ?</li>
                 <li class="list-group-item"><?php echo $usersPostOnly ? 'Oui' : 'Non' ?></li>
             </ul>
+
+            <a href="/<?php echo $name ?>/delete" class="btn btn-danger">Supprimer définitivement la mailingList</a>
         </div>
     </div>
 </div>

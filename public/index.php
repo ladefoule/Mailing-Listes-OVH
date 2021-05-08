@@ -43,7 +43,7 @@ switch ($nbParams) {
 }
 
 $routes = [
-    'GET' => ['index', 'logout', 'create', 'show', 'update', 'options', 'moderator', 'subscriber', 'moderatorCreate', 'subscriberCreate', 'moderatorDelete', 'subscriberDelete'],
+    'GET' => ['index', 'logout', 'create', 'show', 'update', 'options', 'delete', 'moderator', 'subscriber', 'moderatorCreate', 'subscriberCreate', 'moderatorDelete', 'subscriberDelete'],
     'POST' => ['index', 'create', 'update', 'options', 'moderatorCreate', 'subscriberCreate'],
 ];
 

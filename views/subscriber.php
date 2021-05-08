@@ -4,13 +4,15 @@
             <span class='icon-list-bullet'></span> Les abonnés <a href="/<?php echo $name ?>/subscriber/create" class="btn-sm btn-primary text-decoration-none"><span class='icon-plus'></span></a>
         </div>
         <div class="card-body">
-            <div class="col-12 px-0">
+            <h1 class="h5 text-center"><em><?php echo $name.'@'.$domain ?></em></h1>
+
+            <div class="col-12 px-0 mt-4">
                 <table class="table table-striped text-center">
-                    <thead>
+                    <!-- <thead>
                         <th class="border-0">#</th>
-                        <th class="border-0">Email</th>
-                        <th class="border-0">Actions</th>
-                    </thead>
+                        <th class="border-0">email</th>
+                        <th class="border-0">actions</th>
+                    </thead> -->
                     <tbody>
                     <?php
                         foreach ($emails as $i => $email) {
