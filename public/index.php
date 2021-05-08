@@ -11,7 +11,7 @@ $contenu = ''; // Layout content
 $referer = $_SERVER['HTTP_REFERER'] ?? '/';
 $messageError = $messageError . " <a class='ml-3 icon-left-outline' href='$referer'>retour</a>";
 
-$name = $email = ''; $emails = [];
+$name = $email = $error = ''; $emails = [];
 $account = $_SESSION['account'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? 'index';
@@ -39,15 +39,19 @@ switch ($nbParams) {
         break;
 
     default:
-        # code...
         break;
 }
 
+$routes = [
+    'GET' => ['index', 'logout', 'create', 'show', 'update', 'options', 'moderator', 'subscriber', 'moderatorCreate', 'subscriberCreate', 'moderatorDelete', 'subscriberDelete'],
+    'POST' => ['index', 'create', 'update', 'options', 'moderatorCreate', 'subscriberCreate'],
+];
+
 // Si la route n'existe pas ou si elle existe mais que l'utilisateur n'est pas connecté
-// if(! in_array($action, $routes[$method]) || (! $account && $action != 'index')){
-//     header("Location: /");
-//     exit;
-// }
+if(! in_array($action, $routes[$method]) || (! $account && $action != 'index')){
+    header("Location: /");
+    exit;
+}
 
 $api = new ApiOvh([
     'application_key' => $applicationKey,
@@ -61,8 +65,6 @@ $api = new ApiOvh([
 $global = [
     'domain' => $domain,
     'account' => $account,
-    // 'email' => $account.'@'.$domain,
-    'name' => $name,
     'api' => $api,
     'action' => $action,
     'imap_server' => $imapServer,
@@ -84,8 +86,8 @@ if($name && ! $api->isModerator($name, $account.'@'.$domain)){
     ob_start();
     $global = $controller::$action([
         'global' => $global,
-        'name' => $name,
-        'email' => $email,
+        'name' => $name, // Contient le nom de la liste sélectionnée
+        'email' => $email, // L'adresse email de l'abonné ou du modérateur sélectionné
     ]);
     $contenu = ob_get_clean();
 }

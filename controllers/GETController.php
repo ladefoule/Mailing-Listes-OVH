@@ -62,6 +62,28 @@ class GETController
         include('../views/form/mailing-list.php');
         return $global;
     }
+
+    /**
+     * Method show
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function show(array $params)
+    {
+        $global = $params['global'];
+        $name = $params['name'];
+
+        $api = $global['api'];
+        $domain = $global['domain'];
+
+        $mailingList = $api->show($name);
+
+        include('../views/show-mailing-list.php');
+
+        return $global;
+    }
     
     /**
      * Method update

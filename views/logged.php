@@ -18,7 +18,7 @@
                         foreach ($mailingLists as $i => $mailingList) {
                             echo '<tr>';
                                 echo "<td>" . ($i+1) . "</td>";
-                                echo "<td class='text-left'>" . $mailingList . "@" . $domain . "</td>";
+                                echo "<td class='text-left'><a href='/$mailingList/show'>" . $mailingList . "@" . $domain . "</a></td>";
                                 echo "<td>
                                             <a class='btn-sm btn-info' href='/$mailingList/update' title='Modifier la mailingList'><span class='icon-pencil'></span></a>
                                             <a class='btn-sm btn-info' href='/$mailingList/options' title='Modifier les options de la mailinglist'><span class='icon-check'></span></a>
