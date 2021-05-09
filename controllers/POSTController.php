@@ -40,11 +40,11 @@ class POSTController
         }
         include('../views/notification.php');
 
-        // Variables utilisées dans la view logged.php
+        // Variables utilisées dans la view list/mailing-list.php
         $account = $global['account'];
         $domain = $global['domain'];
         $mailingLists = $api->indexAccount($account);
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
         return $global;
     }
 
@@ -83,7 +83,7 @@ class POSTController
         $account = $global['account'];
         $domain = $global['domain'];
         $mailingLists = $api->indexAccount($account);
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
         return $global;
     }
 
@@ -118,7 +118,7 @@ class POSTController
         $account = $global['account'];
         $domain = $global['domain'];
         $mailingLists = $api->indexAccount($account);
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
         return $global;
     }
     
@@ -147,7 +147,7 @@ class POSTController
             $account = '';
             include('../views/login.php');
         }else{
-            // Variables utilisées dans la view logged.php
+            // Variables utilisées dans la view list/mailing-list.php
             $account = htmlspecialchars(strtolower($_POST['account']));
             
             $_SESSION['account'] = $account; // On active la SESSION
@@ -159,7 +159,7 @@ class POSTController
             $message = "Les différentes actions concernant les mailing lists (création d'une liste ou ajout d'un abonné par exemple) peuvent mettre plusieurs secondes avant d'être traitées par OVH. Si vous recevez un message de succès de votre requête, inutile donc de la renouveler même si le résultat n'est pas de suite visible.";
             include('../views/notification.php');
 
-            include('../views/logged.php');
+            include('../views/list/mailing-list.php');
         }
 
         return $global;
@@ -194,13 +194,13 @@ class POSTController
         }
         include('../views/notification.php');
 
-        // Variables utilisées dans la view logged.php
+        // Variables utilisées dans la view list/mailing-list.php
         $action = $global['action'];
         $account = $global['account'];
         $domain = $global['domain'];
 
         $mailingLists = $api->index($global);
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
         return $global;
     }
 
@@ -233,13 +233,13 @@ class POSTController
         }
         include('../views/notification.php');
 
-        // Variables utilisées dans la view logged.php
+        // Variables utilisées dans la view list/mailing-list.php
         $action = $global['action'];
         $account = $global['account'];
         $domain = $global['domain'];
 
         $mailingLists = $api->index($global);
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
         return $global;
     }
 }

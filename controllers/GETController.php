@@ -24,7 +24,7 @@ class GETController
         
         if($account){
             $mailingLists = $api->indexAccount($account);
-            include('../views/logged.php');
+            include('../views/list/mailing-list.php');
         }else
             include('../views/login.php');
 
@@ -81,7 +81,7 @@ class GETController
         $mailingList = $api->show($name);
         $mailingList['nbModerators'] = count($api->moderator($name));
 
-        include('../views/show-mailing-list.php');
+        include('../views/show/mailing-list.php');
 
         return $global;
     }
@@ -114,7 +114,7 @@ class GETController
             $message = $global['message_error'];
             include('../views/notification.php');
 
-            include('../views/logged.php');
+            include('../views/list/mailing-list.php');
         }
 
         return $global;
@@ -153,7 +153,7 @@ class GETController
             $message = $global['message_error'];
             include('../views/notification.php');
 
-            include('../views/logged.php');
+            include('../views/list/mailing-list.php');
         }
 
         return $global;
@@ -182,12 +182,12 @@ class GETController
         }
         include('../views/notification.php');
         
-        // Variables utilisées dans la view logged.php
+        // Variables utilisées dans la view list/mailing-list.php
         $account = $global['account'];
         $domain = $global['domain'];
         $mailingLists = $api->indexAccount($account);
 
-        include('../views/logged.php');
+        include('../views/list/mailing-list.php');
 
         return $global;
     }
@@ -243,7 +243,7 @@ class GETController
             $message = $global['message_error'];
             include('../views/notification.php');
         }else
-            include('../views/subscriber.php');
+            include('../views/list/subscriber.php');
 
         return $global;
     }
@@ -301,8 +301,8 @@ class GETController
         }
         include('../views/notification.php');
 
-        $emails = $api->subscriber($name);  
-        include('../views/subscriber.php');
+        $mailingLists = $api->indexAccount($account);  
+        include('../views/list/mailing-list.php');
 
         return $global;
     }
@@ -333,7 +333,7 @@ class GETController
             $message = $global['message_error'];
             include('../views/notification.php');
         }else
-            include('../views/moderator.php');
+            include('../views/list/moderator.php');
         
         return $global;
     }
@@ -390,8 +390,8 @@ class GETController
         }
         include('../views/notification.php');
 
-        $emails = $api->moderator($name);  
-        include('../views/moderator.php');
+        $mailingLists = $api->indexAccount($account);  
+        include('../views/list/mailing-list.php');
         return $global;
     }
 }
