@@ -68,7 +68,7 @@
                 <li class="list-group-item"><?php echo $usersPostOnly ? 'Oui' : 'Non' ?></li>
             </ul>
 
-            <a href="/<?php echo $name ?>/delete" class="btn btn-danger">Supprimer définitivement la mailingList</a>
+            <a href="/<?php echo $name ?>/delete" class="btn btn-danger">Supprimer définitivement la mailing list</a>
         </div>
     </div>
 </div>

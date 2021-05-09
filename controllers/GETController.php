@@ -47,17 +47,16 @@ class GETController
         $domain = $global['domain'];
         $account = $global['account'];
 
-        $moderatorMessage = $moderatorMessage = $moderatorMessage = false;
-        $name = $replyTo = '';
+        $subscribeByModerator = false;
+        $name = $replyTo = $moderation = '';
         $ownerEmail = $account .'@'. $domain;
 
         if(isset($_SESSION['mailing-list'])){
-            $moderatorMessage = $_SESSION['mailing-list']['moderatorMessage'] ?? '';
             $subscribeByModerator = $_SESSION['mailing-list']['subscribeByModerator'] ?? '';
-            $usersPostOnly = $_SESSION['mailing-list']['usersPostOnly'] ?? '';
             $replyTo = $_SESSION['mailing-list']['replyTo'] ?? '';
             $ownerEmail = $_SESSION['mailing-list']['ownerEmail'] ?? '';
             $name = $_SESSION['mailing-list']['name'] ?? '';
+            $moderation = $_SESSION['mailing-list']['$moderation'] ?? '';
         }
         
         include('../views/form/mailing-list.php');
@@ -100,21 +99,14 @@ class GETController
         $name = $params['name'];
 
         $domain = $global['domain'];
-        $account = $global['account'];
         $api = $global['api'];
         $action = $global['action'];
 
         $mailingList = $api->show($name);
         
         if($mailingList) {
-            // Variables utilisées dans la view form.php
-            $nbSubscribers = $mailingList['nbSubscribers'];
             $replyTo = $mailingList['replyTo'];
-            $usersPostOnly = $mailingList['options']['usersPostOnly'];
-            $moderatorMessage = $mailingList['options']['moderatorMessage'];
-            $subscribeByModerator = $mailingList['options']['subscribeByModerator'];
             $ownerEmail = $mailingList['ownerEmail'];
-            // $content = htmlentities($mailingList['content']);
 
             include('../views/form/mailing-list.php');
         } else {
@@ -141,7 +133,6 @@ class GETController
         $name = $params['name'];
 
         $domain = $global['domain'];
-        $account = $global['account'];
         $api = $global['api'];
         $action = $global['action'];
 
@@ -151,6 +142,10 @@ class GETController
             $usersPostOnly = $mailingList['options']['usersPostOnly'];
             $moderatorMessage = $mailingList['options']['moderatorMessage'];
             $subscribeByModerator = $mailingList['options']['subscribeByModerator'];
+
+            $moderation = '';
+            if($usersPostOnly) $moderation = 'usersPostOnly';
+            if($moderatorMessage) $moderation = 'moderatorMessage';
 
             include('../views/form/mailing-list.php');
         } else {
@@ -299,7 +294,7 @@ class GETController
 
         if($result) {
             $class = 'success';
-            $message = "L'email $email a été supprimé de la liste avec succès ! (effectif dans 5 secondes)";
+            $message = "$email a été supprimé de la liste avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -388,7 +383,7 @@ class GETController
 
         if($result) {
             $class = 'success';
-            $message = "L'email $email a été supprimé de la liste avec succès ! (effectif dans 5 secondes)";
+            $message = "$email a été supprimé de la liste avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];

@@ -9,7 +9,7 @@
                 <table class="table table-striped text-center">
                     <thead>
                         <th class="border-0">#</th>
-                        <th class="border-0 text-left">liste</th>
+                        <th class="border-0 text-left">mailing list</th>
                         <th class="border-0">actions</th>
                         <th class="border-0 d-none d-md-table-cell">abonnés</th>
                         <th class="border-0 d-none d-md-table-cell">modérateurs</th>

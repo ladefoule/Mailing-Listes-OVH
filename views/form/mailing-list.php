@@ -16,29 +16,36 @@
 
                     <div class="form-row pb-3 d-flex align-items-center">
                         <label for="replyTo" class="col-lg-4 text-lg-right col-form-label">Répondre à : </label>
-                        <input type="email" class="form-control-sm col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>">
+                        <input type="email" class="form-control-sm col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>" placeholder="Laisser vide pour répondre à la mailing list">
                     </div>
                 <?php } ?>
                 
                 <?php if(in_array($action, ['create', 'options'])){ ?>
                     <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
-                        <input class="form-check-input" type="checkbox" <?php if($moderatorMessage) echo 'checked'; ?> id="moderatorMessage" name="moderatorMessage">
-                        <label class="form-check-label" for="moderatorMessage">
-                            Modérer tous les messages <span class="icon-mail" title="Le propriétaire ou un modérateur doit approuver l'e-mail envoyé à la mailing-list."></span>
-                        </label>
-                    </div>
-
-                    <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
                         <input class="form-check-input" type="checkbox" <?php if($subscribeByModerator) echo 'checked'; ?> id="subscribeByModerator" name="subscribeByModerator">
                         <label class="form-check-label" for="subscribeByModerator">
-                            Modération des abonnés <span class="icon-mail" title="Le propriétaire, ou un modérateur, doit approuver les inscriptions à la mailing-list."></span>
+                            Modération des abonnés <span class="icon-info-circled" title="Le propriétaire, ou un modérateur, doit approuver les inscriptions à la mailing-list."></span>
                         </label>
                     </div>
 
                     <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
-                        <input class="form-check-input" type="checkbox" <?php if($usersPostOnly) echo 'checked'; ?> id="usersPostOnly" name="usersPostOnly">
-                        <label class="form-check-label" for="usersPostOnly">
-                            Seuls les abonnés peuvent poster <span class="icon-mail" title="Restreint l'envoi d'e-mails sur la mailing list aux seules abonnés de celle-ci."></span>
+                        <input class="form-check-input" type="radio" <?php if($moderation == 'moderatorMessage') echo 'checked'; ?> name="moderation" value="moderatorMessage">
+                        <label class="form-check-label" for="moderation">
+                            Modérer tous les messages <span class="icon-info-circled" title="Le propriétaire ou un modérateur doit approuver l'e-mail envoyé à la mailing-list."></span>
+                        </label>
+                    </div>
+
+                    <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
+                        <input class="form-check-input" type="radio" <?php if($moderation == 'usersPostOnly') echo 'checked'; ?> name="moderation" value="usersPostOnly">
+                        <label class="form-check-label" for="moderation">
+                            Seuls les abonnés peuvent poster <span class="icon-info-circled" title="Restreint l'envoi d'e-mails sur la mailing list aux seules abonnés de celle-ci."></span>
+                        </label>
+                    </div>
+
+                    <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
+                        <input class="form-check-input" type="radio" <?php if($moderation == '') echo 'checked'; ?> name="moderation" value="">
+                        <label class="form-check-label" for="moderation">
+                            Pas de modération des messages
                         </label>
                     </div>
                 <?php } ?>

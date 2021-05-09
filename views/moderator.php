@@ -1,4 +1,4 @@
-<div class="col-lg-8 p-0">
+<div class="col-lg-9 p-0">
     <div class="card">
         <div class="card-header p-3">
             <span class='icon-list-bullet'></span> Les modérateurs <a href="/<?php echo $name ?>/moderator/create" class="btn-sm btn-primary text-decoration-none"><span class='icon-plus'></span></a>

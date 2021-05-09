@@ -66,6 +66,7 @@ $global = [
     'domain' => $domain,
     'account' => $account,
     'api' => $api,
+    'lang' => $lang,
     'action' => $action,
     'imap_server' => $imapServer,
     'class_error' => $classError,

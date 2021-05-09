@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/fontello/css/fontello.css?id=5">
+    <link rel="stylesheet" href="/css/fontello/css/fontello.css?id=6">
     <link rel="stylesheet" href="/css/style.css?id=1">
     <title>Gestion des mailing lists</title>
   </head>

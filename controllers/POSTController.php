@@ -17,12 +17,12 @@ class POSTController
         $name = htmlspecialchars($_POST['name']);
         $replyTo = htmlspecialchars($_POST['replyTo']);
         $ownerEmail = htmlspecialchars($_POST['ownerEmail']);
-        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['moderatorMessage'] = (isset($_POST['moderation']) && $_POST['moderation'] == 'moderatorMessage') ? true : false;
+        $options['usersPostOnly'] = (isset($_POST['moderation']) && $_POST['moderation'] == 'usersPostOnly') ? true : false;
         $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
-        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
 
         $request = array(
-            'language' => 'fr', // Language of mailing list (type: domain.DomainMlLanguageEnum)
+            'language' => $global['lang'], // Language of mailing list (type: domain.DomainMlLanguageEnum)
             'name' => $name, // Mailing list name (type: string)
             'options' => $options, // Options of mailing list (type: domain.DomainMlOptionsStruct)
             'ownerEmail' => $ownerEmail, // Owner Email (type: string)
@@ -33,7 +33,7 @@ class POSTController
 
         if($result) {
             $class = 'success';
-            $message = "MailingList créée avec succès !";
+            $message = "Mailing list créée avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
@@ -41,11 +41,9 @@ class POSTController
         include('../views/notification.php');
 
         // Variables utilisées dans la view logged.php
-        $action = $global['action'];
         $account = $global['account'];
         $domain = $global['domain'];
-
-        $mailingLists = $api->index($global);
+        $mailingLists = $api->indexAccount($account);
         include('../views/logged.php');
         return $global;
     }
@@ -101,9 +99,9 @@ class POSTController
         $global = $params['global'];
         $name = $params['name'];
 
-        $options['moderatorMessage'] = isset($_POST['moderatorMessage']) ? true : false;
+        $options['moderatorMessage'] = (isset($_POST['moderation']) && $_POST['moderation'] == 'moderatorMessage') ? true : false;
+        $options['usersPostOnly'] = (isset($_POST['moderation']) && $_POST['moderation'] == 'usersPostOnly') ? true : false;
         $options['subscribeByModerator'] = isset($_POST['subscribeByModerator']) ? true : false;
-        $options['usersPostOnly'] = isset($_POST['usersPostOnly']) ? true : false;
         
         $api = $global['api'];
         $result = $api->changeOptions($name, $options);
