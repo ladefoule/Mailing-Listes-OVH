@@ -6,7 +6,7 @@ PRÉREQUIS
     - installer composer
     - avoir un nom de domaine (ex : mailing.example.com)
     - créer des accès OVH sur l'API : https://eu.api.ovh.com/createToken/
-      (avec les méthodes get/post/delete sur l'url /email/domain/VOTRENOMDEDOMAINE/mailingList/*)
+      (avec les méthodes get/put/post/delete sur l'url /email/domain/VOTRENOMDEDOMAINE/mailingList/*)
 
 INSTALLATION
 
