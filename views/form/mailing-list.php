@@ -38,7 +38,7 @@
                     <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
                         <input class="form-check-input" type="radio" <?php if($moderation == 'usersPostOnly') echo 'checked'; ?> name="moderation" value="usersPostOnly">
                         <label class="form-check-label" for="moderation">
-                            Seuls les abonnés peuvent poster <span class="icon-info-circled" title="Restreint l'envoi d'e-mails sur la mailing list aux seules abonnés de celle-ci."></span>
+                            Seuls les abonnés peuvent poster <span class="icon-info-circled" title="Restreint l'envoi d'e-mails sur la mailing list aux seuls abonnés de celle-ci."></span>
                         </label>
                     </div>
 

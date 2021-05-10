@@ -45,7 +45,7 @@
 
             <ul class="list-group mb-3">
                 <li class="list-group-item disabled" aria-disabled="true">Les abonnés</li>
-                <li class="list-group-item"><a href="/<?php echo $name ?>/subscriber"><?php echo $nbSubscribers ?> abonné<?php echo ($nbSubscribers > 1) ? 's' : '' ?></a> (mis à jour le <?php echo $nbSubscribersUpdateDate->format('d/m/Y') ?>)</li>
+                <li class="list-group-item"><a href="/<?php echo $name ?>/subscriber"><?php echo $nbSubscribers ?> abonné<?php echo ($nbSubscribers > 1) ? 's' : '' ?></a> (depuis le <?php echo $nbSubscribersUpdateDate->format('d/m/Y') ?>)</li>
             </ul>
             
             <ul class="list-group mb-3">
@@ -54,18 +54,22 @@
             </ul>
 
             <ul class="list-group mb-3">
-                <li class="list-group-item disabled" aria-disabled="true">Le propriétaire ou un modérateur doit approuver l'e-mail envoyé à la mailing-list ?</li>
-                <li class="list-group-item"><?php echo $moderatorMessage ? 'Oui' : 'Non' ?></li>
+                <li class="list-group-item disabled" aria-disabled="true">Modération des messages</li>
+                <li class="list-group-item">
+                    <?php
+                        if($moderatorMessage)
+                            echo "Le propriétaire ou un modérateur doit approuver l'e-mail envoyé à la mailing-list.";
+                        else if($usersPostOnly)
+                            echo "Restreint l'envoi d'e-mails sur la mailing list aux seuls abonnés de celle-ci.";
+                        else
+                            echo "Pas de modération des messages."
+                    ?>
+                </li>
             </ul>
 
             <ul class="list-group mb-3">
                 <li class="list-group-item disabled" aria-disabled="true">Le propriétaire, ou un modérateur, doit approuver les inscriptions à la mailing-list ?</li>
                 <li class="list-group-item"><?php echo $subscribeByModerator ? 'Oui' : 'Non' ?></li>
-            </ul>
-
-            <ul class="list-group mb-3">
-                <li class="list-group-item disabled" aria-disabled="true">Restreint l'envoi d'e-mails sur la mailing list aux seules abonnés de celle-ci ?</li>
-                <li class="list-group-item"><?php echo $usersPostOnly ? 'Oui' : 'Non' ?></li>
             </ul>
 
             <a href="/<?php echo $name ?>/delete" class="btn btn-danger">Supprimer définitivement la mailing list</a>

@@ -3,10 +3,10 @@
 class GETController
 {
     /**
-     * Method index
+     * Accueil
+     * Path : /
      *
      * @param array $global
-     *
      * @return array
      */
     public static function index(array $params)
@@ -32,7 +32,8 @@ class GETController
     }
 
     /**
-     * Method create
+     * Création d'une mailing list
+     * Path : /create
      *
      * @param array $global
      *
@@ -64,7 +65,8 @@ class GETController
     }
 
     /**
-     * Method show
+     * Détail d'une mailing list
+     * Path : /{name}/show
      *
      * @param array $params
      *
@@ -87,7 +89,8 @@ class GETController
     }
     
     /**
-     * Method update
+     * Modification d'une mailing list
+     * Path : /{name}/update
      *
      * @param array $global
      *
@@ -121,7 +124,8 @@ class GETController
     }
 
     /**
-     * Method options
+     * Modification des options d'une mailing-list
+     * Path : /{name}/options
      *
      * @param array $params
      *
@@ -160,7 +164,8 @@ class GETController
     }
     
     /**
-     * Method delete
+     * Suppression d'une mailing list
+     * Path : /{name}/delete
      *
      * @param array $params
      *
@@ -193,7 +198,8 @@ class GETController
     }
     
     /**
-     * Method logout
+     * Déconnexion
+     * Path : /logout
      *
      * @param array $params
      *
@@ -222,7 +228,8 @@ class GETController
     /* --------------------------- */
 
     /**
-     * Liste des abonnés de la liste $name
+     * Liste des abonnés de la mailing list
+     * Path : /{name}/subscriber
      *
      * @param array $global
      *
@@ -249,7 +256,8 @@ class GETController
     }
 
     /**
-     * Ajout d'un abonné dans la liste $name
+     * Ajout d'un abonné à la mailing list
+     * Path : /{name}/subscriber/create
      *
      * @param array $params
      *
@@ -274,7 +282,8 @@ class GETController
     }
 
     /**
-     * Suppression de l'abonné $email de la liste $name
+     * Suppression d'un abonné d'une mailing list
+     * Path : /{name}/subscriber/{email}/delete
      *
      * @param array $global
      *
@@ -312,7 +321,8 @@ class GETController
     /* ------------------------------- */
 
     /**
-     * Liste des modérateurs de la liste $name
+     * Liste des modérateurs de la mailing list
+     * Path : /{name}/moderator
      *
      * @param array $params
      *
@@ -339,7 +349,8 @@ class GETController
     }
 
     /**
-     * Ajout d'un modérateur à la liste $name
+     * Ajout d'un modérateur à la mailing list
+     * Path : /{name}/moderator/create
      *
      * @param array $params
      *
@@ -364,7 +375,8 @@ class GETController
     }
 
     /**
-     * Suppression d'un modérateur dans la liste $name
+     * Suppression d'un modérateur d'une mailing list
+     * Path : /{name}/moderator/{email}/delete
      *
      * @param array $params
      *

@@ -43,12 +43,21 @@ switch ($nbParams) {
 }
 
 $routes = [
-    'GET' => ['index', 'logout', 'create', 'show', 'update', 'options', 'delete', 'moderator', 'subscriber', 'moderatorCreate', 'subscriberCreate', 'moderatorDelete', 'subscriberDelete'],
-    'POST' => ['index', 'create', 'update', 'options', 'moderatorCreate', 'subscriberCreate'],
+    'GET' => [
+                ['index', 'logout', 'create'], // routes avec 1 paramètre
+                ['show', 'update', 'options', 'delete', 'moderator', 'subscriber'], // routes avec 2 paramètres
+                ['moderatorCreate', 'subscriberCreate'], // routes avec 3 paramètres
+                ['moderatorDelete', 'subscriberDelete'], // routes avec 4 paramètres
+    ],
+    'POST' => [
+        ['index', 'create'], // routes avec 1 paramètre
+        ['update', 'options'], // routes avec 2 paramètres
+        ['moderatorCreate', 'subscriberCreate'] // routes avec 3 paramètres
+    ],
 ];
 
 // Si la route n'existe pas ou si elle existe mais que l'utilisateur n'est pas connecté
-if(! in_array($action, $routes[$method]) || (! $account && $action != 'index')){
+if(! in_array($action, $routes[$method][$nbParams-1]) || (! $account && $action != 'index')){
     header("Location: /");
     exit;
 }

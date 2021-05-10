@@ -9,8 +9,8 @@
                 </div>
 
                 <div class="form-row pb-3 d-flex align-items-center">
-                    <label for="email" class="col-lg-4 text-lg-right col-form-label">Email : </label>
-                    <input type="email" class="form-control-sm col-12 col-lg-6" id="email" name="email" value="<?php echo $email ?>">
+                    <label for="email" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Email : </label>
+                    <input type="email" required class="form-control-sm col-12 col-lg-6" id="email" name="email" value="<?php echo $email ?>">
                 </div>
 
                 <div class="form-row pb-3 d-flex">
