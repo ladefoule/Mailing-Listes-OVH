@@ -5,7 +5,7 @@
             <form method="POST">
                 <div class="form-row pb-3 d-flex align-items-center">
                     <label for="name" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Nom : </label>
-                    <input type="text" required <?php if(in_array($action, ['update', 'options'])) echo 'disabled' ?> class="form-control-sm col-6 col-lg-4" id="name" name="name" value="<?php echo $name ?>">@<?php echo $domain ?></span>
+                    <input type="text" required <?php if(in_array($action, ['updateGet', 'optionsGet'])) echo 'disabled' ?> class="form-control-sm col-6 col-lg-4" id="name" name="name" value="<?php echo $name ?>">@<?php echo $domain ?></span>
                 </div>
 
                 <?php if(in_array($action, ['createGet', 'updateGet'])){ ?>
