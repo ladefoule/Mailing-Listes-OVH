@@ -217,17 +217,17 @@ class MailingListController
 
         $mailingList = $api->show($name);
         
-        if($mailingList) {
-            $replyTo = $mailingList['replyTo'];
-            $ownerEmail = $mailingList['ownerEmail'];
-
-            include('../views/form/mailing-list.php');
-        } else {
+        if($mailingList === false) {
             $class = $global['class_error'];
             $message = $global['message_error'];
             include('../views/notification.php');
 
             include('../views/list/mailing-list.php');
+        } else {
+            $replyTo = $mailingList['replyTo'];
+            $ownerEmail = $mailingList['ownerEmail'];
+
+            include('../views/form/mailing-list.php');
         }
 
         return $global;

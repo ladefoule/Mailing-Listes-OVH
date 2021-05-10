@@ -1,6 +1,6 @@
 <?php
 
-class POSTController
+class ModeratorController
 {
     /**
      * Liste des modérateurs de la mailing list

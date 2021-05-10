@@ -15,62 +15,29 @@ $name = $email = $error = ''; $emails = [];
 $account = $_SESSION['account'] ?? '';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? 'index';
-$controller = 'MailingListController';
 
 $parameters = explode('/', $action);
 $nbParams = count($parameters);
 
 $action = $parameters[$nbParams-1];
 
-if($nbParams == 2 && in_array($action, ['subscriber', 'moderator'])){
-    $controller = ucfirst($action) . 'Controller';
-    $action = 'index';
+$controller = 'MailingListController'; // par défaut
+if($nbParams >= 2){
+    $name = $parameters[0]; // nom de la mailing list
+    if($nbParams == 2 && in_array($action, ['subscriber', 'moderator'])){
+        $controller = ucfirst($action) . 'Controller';
+        $action = 'index';
+    }
+    if($nbParams >= 3){
+        $controller = ucfirst($parameters[1]) . 'Controller';
+
+        if($nbParams == 4)
+            $email = $parameters[2];
+    }
 }
-if($nbParams >= 3)
-    $controller = ucfirst($parameters[1]) . 'Controller';
 
+// $action correpondra à la méthode à appeler dans le controller. ex : createGet
 $action = strtolower($action) . ucfirst(strtolower($requestMethod));
-// echo $action;exit();
-
-// echo method_exists($controller, $action . ucfirst(strtolower($method))) ? 'OK' : 'KO';exit();
-// echo $controller.'::'.$action . ucfirst(strtolower($method));exit();
-
-// switch ($nbParams) {
-//     case 2:
-//         $name = $parameters[0];
-//         $action = $parameters[1];
-//         break;
-    
-//     case 3:
-//         $name = $parameters[0];
-//         $type = $parameters[1];
-//         $action = $type . 'Create';
-//         break;
-    
-//     case 4:
-//         $name = $parameters[0];
-//         $type = $parameters[1];
-//         $email = $parameters[2];
-//         $action = $type . 'Delete';
-//         break;
-
-//     default:
-//         break;
-// }
-
-// $routes = [
-//     'GET' => [
-//                 ['index', 'logout', 'create'], // routes avec 1 paramètre
-//                 ['show', 'update', 'options', 'delete', 'moderator', 'subscriber'], // routes avec 2 paramètres
-//                 ['moderatorCreate', 'subscriberCreate'], // routes avec 3 paramètres
-//                 ['moderatorDelete', 'subscriberDelete'], // routes avec 4 paramètres
-//     ],
-//     'POST' => [
-//         ['index', 'create'], // routes avec 1 paramètre
-//         ['update', 'options'], // routes avec 2 paramètres
-//         ['moderatorCreate', 'subscriberCreate'] // routes avec 3 paramètres
-//     ],
-// ];
 
 // Si la route n'existe pas
 if(! method_exists($controller, $action)){
