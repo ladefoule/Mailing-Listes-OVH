@@ -1,5 +1,4 @@
 <?php 
-// session_start();
 use Ovh\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -63,7 +62,9 @@ class ApiOvh
         return $mailingLists;
     }
 
-    // Récupération des infos de la mailing list
+    /**
+     * Récupération des infos de la mailing list
+     */
     public function show($name)
     {
         try {
@@ -74,20 +75,16 @@ class ApiOvh
         }
     }
 
-    // Création d'une mailing list
+    /**
+     * Création d'une mailing list
+     */
     public function create($request)
     {
         try {
             $this->api->post("/email/domain/$this->domain/mailingList/", $request);
-
-            // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            $_SESSION['mailing-list']['name'] = $request['name'];
-            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
-            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
             return false;
         }
     }
@@ -101,9 +98,6 @@ class ApiOvh
             $this->api->post("/email/domain/$this->domain/mailingList/$name/changeOptions", array(
                 'options' => $options
             ));
-
-            // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
@@ -112,25 +106,22 @@ class ApiOvh
     }
 
     /**
-     * Mise à jour des infos d'une mailing list
+     * Mise à jour des infos (hors options) d'une mailing list
      */
     public function update($name, $request)
     {
         try {
             $this->api->put("/email/domain/$this->domain/mailingList/$name", $request);
-
-            // On supprime les données du formulaire potentiellement sauvegardées dans la SESSION
-            unset($_SESSION['mailing-list']); 
             return true;
         } catch (RequestException $e) {
             error_log($e->getResponse()->getBody()->getContents());
-            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
-            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
             return false;
         }
     }
 
-    // Suppression d'une mailing list existante
+    /**
+     * Suppression d'une mailing list existante
+     */
     public function delete($name)
     {
         try {  
@@ -146,6 +137,9 @@ class ApiOvh
     /*      GESTION DES ABONNES    */
     /* --------------------------- */
 
+    /**
+     * Liste des abonnés
+     */
     public function subscriber($name)
     {
         try {
@@ -156,6 +150,9 @@ class ApiOvh
         }
     }
 
+    /**
+     * Ajout d'un abonné
+     */
     public function subscriberCreate($name, $email)
     {
         try {
@@ -170,6 +167,9 @@ class ApiOvh
         }
     }
 
+    /**
+     * Suppression d'un abonné
+     */
     public function subscriberDelete($name, $email)
     {
         try {  
@@ -185,6 +185,9 @@ class ApiOvh
     /*      GESTION DES MODERATEURS    */
     /* ------------------------------- */
 
+    /**
+     * Liste des modérateurs
+     */
     public function moderator($name)
     {
         try {
@@ -195,12 +198,18 @@ class ApiOvh
         }
     }
     
+    /**
+     * Vérification si un email est modérateur ou non de la mailing list
+     */
     public function isModerator($name, $email)
     {
         $moderators = $this->moderator($name);
         return in_array($email, $moderators);
     }
 
+    /**
+     * Ajout d'un modérateur
+     */
     public function moderatorCreate($name, $email)
     {
         try {
@@ -215,6 +224,9 @@ class ApiOvh
         }
     }
 
+    /**
+     * Suppression d'un modérateur
+     */
     public function moderatorDelete($name, $email)
     {
         try {  

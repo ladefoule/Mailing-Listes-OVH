@@ -13,51 +13,67 @@ $messageError = $messageError . " <a class='ml-3 icon-left-outline' href='$refer
 
 $name = $email = $error = ''; $emails = [];
 $account = $_SESSION['account'] ?? '';
-$method = $_SERVER['REQUEST_METHOD'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? 'index';
+$controller = 'MailingListController';
 
 $parameters = explode('/', $action);
 $nbParams = count($parameters);
 
-switch ($nbParams) {
-    case 2:
-        $name = $parameters[0];
-        $action = $parameters[1];
-        break;
-    
-    case 3:
-        $name = $parameters[0];
-        $type = $parameters[1];
-        $action = $type . 'Create';
-        break;
-    
-    case 4:
-        $name = $parameters[0];
-        $type = $parameters[1];
-        $email = $parameters[2];
-        $action = $type . 'Delete';
-        break;
+$action = $parameters[$nbParams-1];
 
-    default:
-        break;
+if($nbParams == 2 && in_array($action, ['subscriber', 'moderator'])){
+    $controller = ucfirst($action) . 'Controller';
+    $action = 'index';
 }
+if($nbParams >= 3)
+    $controller = ucfirst($parameters[1]) . 'Controller';
 
-$routes = [
-    'GET' => [
-                ['index', 'logout', 'create'], // routes avec 1 paramètre
-                ['show', 'update', 'options', 'delete', 'moderator', 'subscriber'], // routes avec 2 paramètres
-                ['moderatorCreate', 'subscriberCreate'], // routes avec 3 paramètres
-                ['moderatorDelete', 'subscriberDelete'], // routes avec 4 paramètres
-    ],
-    'POST' => [
-        ['index', 'create'], // routes avec 1 paramètre
-        ['update', 'options'], // routes avec 2 paramètres
-        ['moderatorCreate', 'subscriberCreate'] // routes avec 3 paramètres
-    ],
-];
+$action = strtolower($action) . ucfirst(strtolower($requestMethod));
+// echo $action;exit();
 
-// Si la route n'existe pas ou si elle existe mais que l'utilisateur n'est pas connecté
-if(! in_array($action, $routes[$method][$nbParams-1]) || (! $account && $action != 'index')){
+// echo method_exists($controller, $action . ucfirst(strtolower($method))) ? 'OK' : 'KO';exit();
+// echo $controller.'::'.$action . ucfirst(strtolower($method));exit();
+
+// switch ($nbParams) {
+//     case 2:
+//         $name = $parameters[0];
+//         $action = $parameters[1];
+//         break;
+    
+//     case 3:
+//         $name = $parameters[0];
+//         $type = $parameters[1];
+//         $action = $type . 'Create';
+//         break;
+    
+//     case 4:
+//         $name = $parameters[0];
+//         $type = $parameters[1];
+//         $email = $parameters[2];
+//         $action = $type . 'Delete';
+//         break;
+
+//     default:
+//         break;
+// }
+
+// $routes = [
+//     'GET' => [
+//                 ['index', 'logout', 'create'], // routes avec 1 paramètre
+//                 ['show', 'update', 'options', 'delete', 'moderator', 'subscriber'], // routes avec 2 paramètres
+//                 ['moderatorCreate', 'subscriberCreate'], // routes avec 3 paramètres
+//                 ['moderatorDelete', 'subscriberDelete'], // routes avec 4 paramètres
+//     ],
+//     'POST' => [
+//         ['index', 'create'], // routes avec 1 paramètre
+//         ['update', 'options'], // routes avec 2 paramètres
+//         ['moderatorCreate', 'subscriberCreate'] // routes avec 3 paramètres
+//     ],
+// ];
+
+// Si la route n'existe pas
+if(! method_exists($controller, $action)){
     header("Location: /");
     exit;
 }
@@ -82,8 +98,6 @@ $global = [
     'message_error' => $messageError,
 ];
 
-$controller = $method.'Controller';
-
 // Pour éviter d'agir sur une liste sur laquelle l'utilisateur n'est pas modérateur
 if($name && ! $api->isModerator($name, $account.'@'.$domain)){
     $class = $global['class_error'];
@@ -92,7 +106,6 @@ if($name && ! $api->isModerator($name, $account.'@'.$domain)){
     include('../views/notification.php');
     $contenu = ob_get_clean();
 }else{
-    // echo $action;exit();
     ob_start();
     $global = $controller::$action([
         'global' => $global,

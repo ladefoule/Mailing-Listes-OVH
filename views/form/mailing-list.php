@@ -8,7 +8,7 @@
                     <input type="text" required <?php if(in_array($action, ['update', 'options'])) echo 'disabled' ?> class="form-control-sm col-6 col-lg-4" id="name" name="name" value="<?php echo $name ?>">@<?php echo $domain ?></span>
                 </div>
 
-                <?php if(in_array($action, ['create', 'update'])){ ?>
+                <?php if(in_array($action, ['createGet', 'updateGet'])){ ?>
                     <div class="form-row pb-3 d-flex align-items-center">
                         <label for="ownerEmail" class="col-lg-4 text-lg-right col-form-label"><span class="text-danger">*</span> Propriétaire : </label>
                         <input type="text" required class="form-control-sm col-12 col-lg-6" id="ownerEmail" name="ownerEmail" value="<?php echo $ownerEmail ?>">
@@ -20,7 +20,7 @@
                     </div>
                 <?php } ?>
                 
-                <?php if(in_array($action, ['create', 'options'])){ ?>
+                <?php if(in_array($action, ['createGet', 'optionsGet'])){ ?>
                     <div class="offset-lg-4 form-check pb-3 d-flex align-items-center">
                         <input class="form-check-input" type="checkbox" <?php if($subscribeByModerator) echo 'checked'; ?> id="subscribeByModerator" name="subscribeByModerator">
                         <label class="form-check-label" for="subscribeByModerator">
