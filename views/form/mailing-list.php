@@ -16,7 +16,7 @@
 
                     <div class="form-row pb-3 d-flex align-items-center">
                         <label for="replyTo" class="col-lg-4 text-lg-right col-form-label">Répondre à : </label>
-                        <input type="email" class="form-control-sm col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo $replyTo ?>" placeholder="Laisser vide pour répondre à la mailing list">
+                        <input type="email" class="form-control-sm col-12 col-lg-6" id="replyTo" name="replyTo" value="<?php echo ($replyTo == 'mailinglist') ? '' : $replyTo  ?>" placeholder="Laisser vide pour répondre à la mailing list">
                     </div>
                 <?php } ?>
                 

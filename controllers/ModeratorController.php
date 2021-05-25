@@ -113,7 +113,7 @@ class ModeratorController
 
         if($result) {
             $class = 'success';
-            $message = "$email a été supprimé de la liste avec succès !";
+            $message = "$email a été supprimé de la liste ($name@$domain) avec succès !";
         }else{                        
             $class = $global['class_error'];
             $message = $global['message_error'];
