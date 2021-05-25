@@ -182,9 +182,12 @@ class MailingListController
         $domain = $global['domain'];
 
         $mailingList = $api->show($name);
+
+        // Le nbSubscribers retourné par OVH n'est pas toujours bon donc on le recalcule avec le vrai nombre d'abonnés
+        $mailingList['nbSubscribers'] = count($api->subscriber($name) ?? []);
         
         if($mailingList) {
-            $mailingList['nbModerators'] = count($api->moderator($name));
+            $mailingList['nbModerators'] = count($api->moderator($name) ?? []);
 
             include('../views/show/mailing-list.php');
         } else {

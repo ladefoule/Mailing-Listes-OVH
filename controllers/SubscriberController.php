@@ -19,6 +19,8 @@ class SubscriberController
         $domain = $global['domain'];
 
         $emails = $api->subscriber($name);
+
+        // var_dump($emails);exit();
         
         if($emails === false){
             $class = $global['class_error'];
@@ -46,10 +48,10 @@ class SubscriberController
         $action = $global['action'];
         $domain = $global['domain'];
 
-        $email = '';
+        $emails = '';
 
         if(isset($_SESSION['subscriber'])){
-            $email = $_SESSION['subscriber']['email'] ?? '';
+            $emails = $_SESSION['subscriber']['emails'] ?? '';
         }
         
         include('../views/form/subscriber.php');
@@ -70,16 +72,36 @@ class SubscriberController
         $name = $params['name'];
 
         $api = $global['api'];
-        $email = htmlspecialchars($_POST['email']);
-        $result = $api->subscriberCreate($name, $email);
 
-        if($result) {
-            $class = 'success';
-            $message = "Nouvel abonné ajouté avec succès !";
-        }else{                        
-            $class = $global['class_error'];
-            $message = $global['message_error'];
+        $emails = preg_split("/\\r\\n|\\r|\\n/", $_POST['emails'] ?? '');
+        // $emails = explode(PHP_EOL, $_POST['emails'] ?? '');
+        
+        foreach ($emails as $email) {
+            $email = htmlspecialchars($email);
+            $result = $api->subscriberCreate($name, $email);
+
+            if($result)
+                $success[] = $email;
+            else
+                $error[] = $email;
         }
+
+        $class = 'info';
+
+        $message = '';
+        if($success){
+            $message .= "Abonnés ajoutés :<br>";
+            foreach ($success as $email)
+            $message .= $email . "<br>";
+        }
+
+        if($error){
+            $message .= "<br>Erreurs :<br>";
+            foreach ($error as $email)
+                $message .= $email . "<br>";
+        }
+
+        
         include('../views/notification.php');
 
         // Variables utilisées dans la view list/mailing-list.php

@@ -2,13 +2,15 @@
     "require": {
         "ovh/ovh": "^2.1",
         "nesbot/carbon": "^2.45",
-        "twbs/bootstrap": "^4.6"
+        "twbs/bootstrap": "^4.6",
+        "components/jquery": "^3.5"
     },
 
     "scripts": {
         "post-autoload-dump": [
             "php -r \"copy('vendor/twbs/bootstrap/dist/css/bootstrap.min.css', 'public/css/bootstrap.min.css');\"",
-            "php -r \"copy('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'public/js/bootstrap.bundle.min.js');\""
+            "php -r \"copy('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'public/js/bootstrap.bundle.min.js');\"",
+            "php -r \"copy('vendor/components/jquery/jquery.min.js', 'public/js/jquery.min.js');\""
         ]
     },
 
