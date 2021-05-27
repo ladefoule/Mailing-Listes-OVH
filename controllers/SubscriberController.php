@@ -19,6 +19,7 @@ class SubscriberController
         $domain = $global['domain'];
 
         $emails = $api->subscriber($name);
+        asort($emails);
 
         // var_dump($emails);exit();
         

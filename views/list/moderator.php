@@ -15,9 +15,10 @@
                     </thead> -->
                     <tbody>
                     <?php
-                        foreach ($emails as $i => $email) {
+                        $i = 1;
+                        foreach ($emails as $email) {
                             echo '<tr>';
-                                echo "<td>" . ($i+1) . "</td>";
+                                echo "<td>" . ($i++) . "</td>";
                                 echo "<td class='text-left'>" . $email . "</td>";
                                 echo "<td>
                                         <a class='btn-sm btn-danger' href='/$name/moderator/$email/delete' title='Supprimer le modérateur'><span class='icon-trash-empty'></span></a>

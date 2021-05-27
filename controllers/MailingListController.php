@@ -22,6 +22,7 @@ class MailingListController
         
         if($account){
             $mailingLists = $api->indexAccount($account);
+            asort($mailingLists);
             include('../views/list/mailing-list.php');
         }else
             include('../views/login.php');

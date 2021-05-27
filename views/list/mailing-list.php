@@ -16,9 +16,10 @@
                     </thead>
                     <tbody>
                     <?php
-                        foreach ($mailingLists as $i => $mailingList) {
+                        $i = 1;
+                        foreach ($mailingLists as $mailingList) {
                             echo '<tr>';
-                                echo "<td>" . ($i+1) . "</td>";
+                                echo "<td>" . ($i++) . "</td>";
                                 echo "<td class='text-left'><a href='/$mailingList/show'>" . $mailingList . "@" . $domain . "</a></td>";
                                 echo "<td>
                                             <a class='btn-sm btn-info' href='/$mailingList/update' title='Modifier'><span class='icon-pencil'></span></a>
