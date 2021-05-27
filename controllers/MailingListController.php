@@ -19,8 +19,6 @@ class MailingListController
 
         // On supprime les données des formulaires potentiellement sauvegardées dans la SESSION
         unset($_SESSION['mailing-list']); 
-        unset($_SESSION['subscriber']); 
-        unset($_SESSION['moderator']); 
         
         if($account){
             $mailingLists = $api->indexAccount($account);
@@ -149,11 +147,11 @@ class MailingListController
             $message = $global['message_error'];
 
             // On sauvegarde en session le contenu du formulaire
-            $_SESSION['mailing-list']['name'] = $request['name'];
-            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
-            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
-            $_SESSION['mailing-list']['moderation'] = $request['moderation'];
-            $_SESSION['mailing-list']['subscribeByModerator'] = $request['subscribeByModerator'];
+            $_SESSION['mailing-list']['name'] = $request['name'] ?? '';
+            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'] ?? '';
+            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'] ?? '';
+            $_SESSION['mailing-list']['moderation'] = $request['moderation'] ?? '';
+            $_SESSION['mailing-list']['subscribeByModerator'] = $request['subscribeByModerator'] ?? '';
         }
         include('../views/notification.php');
 
@@ -270,8 +268,8 @@ class MailingListController
             $class = $global['class_error'];
             $message = $global['message_error'];
 
-            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'];
-            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'];
+            $_SESSION['mailing-list']['ownerEmail'] = $request['ownerEmail'] ?? '';
+            $_SESSION['mailing-list']['replyTo'] = $request['replyTo'] ?? '';
         }
         include('../views/notification.php');
 
@@ -353,8 +351,8 @@ class MailingListController
             $message = $global['message_error'];
 
             // On sauvegarde en session le contenu du formulaire
-            $_SESSION['mailing-list']['moderation'] = $_POST['moderation'];
-            $_SESSION['mailing-list']['subscribeByModerator'] = $_POST['subscribeByModerator'];
+            $_SESSION['mailing-list']['moderation'] = $_POST['moderation'] ?? '';
+            $_SESSION['mailing-list']['subscribeByModerator'] = $_POST['subscribeByModerator'] ?? '';
         }
         include('../views/notification.php');
 
