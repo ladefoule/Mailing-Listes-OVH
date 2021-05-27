@@ -73,6 +73,7 @@ class SubscriberController
 
         $api = $global['api'];
 
+        $success = $error = [];
         $emails = preg_split("/\\r\\n|\\r|\\n/", $_POST['emails'] ?? '');
         // $emails = explode(PHP_EOL, $_POST['emails'] ?? '');
         
@@ -92,7 +93,7 @@ class SubscriberController
         if($success){
             $message .= "Abonnés ajoutés :<br>";
             foreach ($success as $email)
-            $message .= $email . "<br>";
+                $message .= $email . "<br>";
         }
 
         if($error){

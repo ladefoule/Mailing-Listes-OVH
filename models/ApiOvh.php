@@ -37,7 +37,7 @@ class ApiOvh
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/");
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -70,7 +70,7 @@ class ApiOvh
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/$name");
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -84,7 +84,7 @@ class ApiOvh
             $this->api->post("/email/domain/$this->domain/mailingList/", $request);
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -100,7 +100,7 @@ class ApiOvh
             ));
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -114,7 +114,7 @@ class ApiOvh
             $this->api->put("/email/domain/$this->domain/mailingList/$name", $request);
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -128,7 +128,7 @@ class ApiOvh
             $this->api->delete("/email/domain/$this->domain/mailingList/$name");
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -145,7 +145,7 @@ class ApiOvh
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/$name/subscriber");
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -162,7 +162,7 @@ class ApiOvh
 
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -176,7 +176,7 @@ class ApiOvh
             $this->api->delete("/email/domain/$this->domain/mailingList/$name/subscriber/$email");
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -193,7 +193,7 @@ class ApiOvh
         try {
             return $this->api->get("/email/domain/$this->domain/mailingList/$name/moderator");
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -219,7 +219,7 @@ class ApiOvh
 
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -233,7 +233,7 @@ class ApiOvh
             $this->api->delete("/email/domain/$this->domain/mailingList/$name/moderator/$email");
             return true;
         } catch (RequestException $e) {
-            error_log($e->getResponse()->getBody()->getContents());
+            error_log($e->getResponse() ?? $e->getResponse()->getBody()->getContents());
             return false;
         }
     }
