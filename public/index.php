@@ -1,10 +1,14 @@
 <?php 
+require '../config.php';
+
+if($singleSession)
+    setcookie('PHPSESSID', $_COOKIE['PHPSESSID'], time()+3600, '/', '.'.$domain);
+
 session_start();
 
 // use ApiOvh;
 
 require __DIR__ . '/../vendor/autoload.php';
-require '../config.php';
 
 $contenu = ''; // Layout content
 

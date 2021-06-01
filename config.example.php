@@ -7,6 +7,7 @@
     $endpoint = 'ovh-eu';
     $domain = "example.fr";
     $imapServer = 'ssl0.ovh.net';
+    $singleSession = true; // propagation de la session vers les autres sous-domaines
 
     $lang = 'fr';
 
