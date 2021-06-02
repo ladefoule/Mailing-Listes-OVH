@@ -2,15 +2,14 @@
 require '../config.php';
 
 if($singleSession)
-    setcookie('PHPSESSID', $_COOKIE['PHPSESSID'], time()+3600, '/', '.'.$domain);
+    setcookie($domain, $_COOKIE[$domain], time()+3600, '/', $domain, true, true);
 
+session_name($domain);
 session_start();
-
-// use ApiOvh;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$contenu = ''; // Layout content
+$content = ''; // Layout content
 
 $referer = $_SERVER['HTTP_REFERER'] ?? '/';
 $messageError = $messageError . " <a class='ml-3 icon-left-outline' href='$referer'>retour</a>";
@@ -75,7 +74,7 @@ if($name && ! $api->isModerator($name, $account.'@'.$domain)){
     $message = $global['message_error'];
     ob_start();
     include('../views/notification.php');
-    $contenu = ob_get_clean();
+    $content = ob_get_clean();
 }else{
     ob_start();
     $global = $controller::$action([
@@ -83,7 +82,7 @@ if($name && ! $api->isModerator($name, $account.'@'.$domain)){
         'name' => $name, // Contient le nom de la liste sélectionnée
         'email' => $email, // L'adresse email de l'abonné ou du modérateur sélectionné
     ]);
-    $contenu = ob_get_clean();
+    $content = ob_get_clean();
 }
 
 // $mailingLists = $api->get($global);

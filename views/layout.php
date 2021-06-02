@@ -51,7 +51,7 @@
     </nav>
 
     <div class="container d-flex justify-content-center py-3 flex-wrap">
-        <?php echo $contenu; ?>
+        <?php echo $content; ?>
     </div>
 
     <script src="/js/jquery.min.js"></script>
