@@ -1,10 +1,12 @@
 <?php 
 require '../config.php';
 
-if($singleSession)
-    setcookie($domain, $_COOKIE[$domain], time()+3600, '/', $domain, true, true);
+$cookieName = str_replace(['.', '-'], '_', $domain);
 
-session_name($domain);
+if($singleSession)
+    setcookie($cookieName, $_COOKIE[$cookieName], time()+3600, '/', $domain, false, true);
+
+session_name($cookieName);
 session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
