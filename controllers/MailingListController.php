@@ -45,8 +45,12 @@ class MailingListController
         $domain = $global['domain'];
         $account = $global['account'];
         $imapServer = $global['imap_server'];
+        $cookieName = $global['cookie_name'];
+        $singleSession = $global['single_session'];
+
         $email = htmlspecialchars($_POST['account']) .'@'. $domain;
         $password = htmlspecialchars($_POST['password']);
+        $remember = isset($_POST['remember']) ? true : false;
 
         if (! canLoginEmailAccount($imapServer, $email, $password)){        
             $class = 'danger';
@@ -61,6 +65,10 @@ class MailingListController
             
             $_SESSION['account'] = $account; // On active la SESSION
             $global['account'] = $account; // On met à jour la variable $global
+            $_SESSION['remember'] = $remember;
+
+            if($remember)
+                setcookie($cookieName, $_COOKIE[$cookieName], time() + 60*60*24*365, '/', $singleSession ? $domain : '', false, true);
             
             $mailingLists = $api->indexAccount($account);
 

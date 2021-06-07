@@ -1,11 +1,13 @@
 <?php 
 require '../config.php';
 
-$cookieName = str_replace(['.', '-'], '_', $domain);
+// On calcule la durée de la session en fonction du choix de l'utilisateur à la connexion (1 jour par défaut ou 1 an s'il veut garder la session active)
+if(isset($_SESSION['remember']) && $_SESSION['remember'])
+    $expires = time()+60*60*24*365;
+else
+    $expires = time()+60*60;
 
-if($singleSession)
-    setcookie($cookieName, $_COOKIE[$cookieName], time()+3600, '/', $domain, false, true);
-
+setcookie($cookieName, $_COOKIE[$cookieName] ?? '', $expires, '/', $singleSession ? $domain : '', false, true);
 session_name($cookieName);
 session_start();
 
@@ -65,6 +67,8 @@ $global = [
     'api' => $api,
     'lang' => $lang,
     'action' => $action,
+    'cookie_name' => $cookieName,
+    'single_session' => $singleSession,
     'imap_server' => $imapServer,
     'class_error' => $classError,
     'message_error' => $messageError,
