@@ -1,16 +1,13 @@
 <?php 
 require '../config.php';
 
-session_name($cookieName);
 session_start();
 
-// On calcule la durée de la session en fonction du choix de l'utilisateur à la connexion (1 jour par défaut ou 1 an s'il veut garder la session active)
-if(isset($_SESSION['remember']) && $_SESSION['remember'])
-    $expires = time()+60*60*24*365;
-else
-    $expires = time()+60*60;
-
-setcookie($cookieName, $_COOKIE[$cookieName] ?? '', $expires, '/', $singleSession ? $domain : '', false, true);
+// Si le cookie existe alors on récupère le nom de l'utilisateur
+if(isset($_COOKIE[$cookieName])){
+    $cookie = unserialize($_COOKIE[$cookieName]);
+    $_SESSION['account'] = $cookie['account'];
+}
 
 require __DIR__ . '/../vendor/autoload.php';
 

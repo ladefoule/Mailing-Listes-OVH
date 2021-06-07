@@ -65,10 +65,20 @@ class MailingListController
             
             $_SESSION['account'] = $account; // On active la SESSION
             $global['account'] = $account; // On met à jour la variable $global
-            $_SESSION['remember'] = $remember;
-
+            
             if($remember)
-                setcookie($cookieName, $_COOKIE[$cookieName], time() + 60*60*24*365, '/', $singleSession ? $domain : '', false, true);
+                $expires = time()+60*60*24*365; // 1 an
+            else
+                $expires = time()+60*60; // 1 heure
+
+            $cookieDomain = $singleSession ? $domain : '';
+            $cookie = [
+                'expires' => $expires,
+                'domain' => $cookieDomain,
+                'account' => $account,
+            ];
+
+            setcookie($cookieName, serialize($cookie), $expires, '/', $cookieDomain, false, true);
             
             $mailingLists = $api->indexAccount($account);
 
@@ -416,8 +426,20 @@ class MailingListController
      */
     public static function logoutGet(array $params)
     {
-        session_destroy();
         $global = $params['global'];
+        $cookieName = $global['cookie_name'];
+        $domain = $global['domain'];
+        $singleSession = $global['single_session'];
+
+        // Suppression de la session
+        session_destroy();
+
+        // Suppression du cookie
+        if(isset($_COOKIE[$cookieName])){
+            unset($_COOKIE[$cookieName]);
+            setcookie($cookieName, null, time() - 3600, '/', $singleSession ? $domain : '');
+        }
+        
         
         $message = "Vous êtes déconnecté.";
         $class = "success";

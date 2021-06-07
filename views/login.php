@@ -5,7 +5,7 @@
         </div>
         <div class="card-body p-3">
             <form action="/" method="POST">
-            <div class="form-row pb-3">
+                <div class="form-row pb-3">
                     <label for="account" class="col-md-3 col-form-label text-md-right"><span class="text-danger">*</span> Email</label>
                     <div class="col-md-8 d-flex flex-wrap align-items-center">
                         <input type="text" required class="form-control-sm col-sm-7" id="account" name="account" placeholder="Votre email perso">
