@@ -8,7 +8,7 @@
     $domain = "example.fr";
     $imapServer = 'ssl0.ovh.net';
 
-    $cookieName = str_replace(['.', '-'], '_', $domain);
+    $cookieName = 'remember_' . str_replace(['.', '-'], '_', $domain);
     $singleSession = true; // propagation de la session vers les autres sous-domaines
 
     $lang = 'fr';

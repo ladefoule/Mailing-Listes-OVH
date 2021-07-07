@@ -111,7 +111,7 @@ class SubscriberController
         $account = $global['account'];
         $domain = $global['domain'];
 
-        $mailingLists = $api->index($global);
+        $mailingLists = $api->indexAccount($account);
         include('../views/list/mailing-list.php');
         return $global;
     }
