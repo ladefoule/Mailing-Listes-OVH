@@ -93,6 +93,42 @@ class MailingListController
     }
 
     /**
+     * La liste de toutes les mailing lists
+     * Path : /all
+     *
+     * @param array $global
+     * @return array
+     */
+    public static function allGet(array $params)
+    {
+        $global = $params['global'];
+        
+        $api = $global['api'];
+        $domain = $global['domain'];
+        $account = $global['account'];
+        
+        if($account){
+            $mailingLists = $api->index($params);
+
+            foreach ($mailingLists as $key => $mailingList) {
+                $subscribers = $api->subscriber($mailingList);
+                $moderators = $api->moderator($mailingList);
+
+                $mailingLists[$key] = [];
+                $mailingLists[$key]['name'] = $mailingList;
+                $mailingLists[$key]['nb_subscribers'] = count($subscribers);
+                $mailingLists[$key]['nb_moderators'] = count($moderators);
+            }
+            // var_dump($mailingLists);exit();
+            asort($mailingLists);
+            include('../views/list/all.php');
+        }else
+            include('../views/login.php');
+
+        return $global;
+    }
+
+    /**
      * Création d'une mailing list
      * Path : /create
      *

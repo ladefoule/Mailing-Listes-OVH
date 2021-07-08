@@ -23,10 +23,12 @@
                     <?php if($account){ ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Mes mailing lists
+                            Mailing list
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/create">Créer</a>
+                            <a class="dropdown-item" href="/">Mes listes</a>
+                            <a class="dropdown-item" href="/all">Toutes les listes</a>
                         </div>
                     </li>
                     <?php } ?>
